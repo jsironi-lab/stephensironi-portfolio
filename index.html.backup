@@ -285,13 +285,6 @@
             font-style: italic;
         }
 
-        .painting-info .description {
-            font-size: 0.95rem;
-            color: #666;
-            line-height: 1.6;
-            margin-bottom: 1.5rem;
-        }
-
         .price-tag {
             font-size: 1.3rem;
             color: var(--accent-rust);
