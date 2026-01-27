@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stephen Sironi | Boston Life in Paint</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Manrope:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink-black: #1a1a1a;
+            --canvas-white: #fafaf8;
+            --gallery-gray: #e8e6e0;
+            --accent-rust: #c05746;
+            --accent-navy: #2c3e50;
+            --warm-cream: #f4f1ea;
+            --shadow: rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background: var(--canvas-white);
+            color: var(--ink-black);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(250, 250, 248, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--gallery-gray);
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+            color: var(--ink-black);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--ink-black);
+            font-size: 0.9rem;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent-rust);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-rust);
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 80px;
+            height: 85vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: linear-gradient(135deg, var(--warm-cream) 0%, var(--canvas-white) 100%);
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(192, 87, 70, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(44, 62, 80, 0.03) 0%, transparent 50%);
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 1;
+            max-width: 900px;
+            padding: 0 2rem;
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 4.5rem;
+            font-weight: 300;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -1px;
+        }
+
+        .hero .subtitle {
+            font-size: 1.3rem;
+            color: #666;
+            font-weight: 300;
+            margin-bottom: 3rem;
+            letter-spacing: 1px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: var(--accent-rust);
+            color: white;
+            text-decoration: none;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-family: 'Manrope', sans-serif;
+        }
+
+        .cta-button:hover {
+            background: var(--accent-navy);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* About Section */
+        .about {
+            padding: 8rem 10%;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 6rem;
+            align-items: center;
+            background: var(--canvas-white);
+        }
+
+        .about-image {
+            width: 100%;
+            height: 500px;
+            background: var(--gallery-gray);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-image::before {
+            content: 'Artist at Work';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            color: #999;
+            letter-spacing: 2px;
+        }
+
+        .about-content h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            color: var(--ink-black);
+        }
+
+        .about-content p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 1.5rem;
+        }
+
+        .signature {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-style: italic;
+            margin-top: 2rem;
+            color: var(--accent-rust);
+        }
+
+        /* Gallery Section */
+        .gallery {
+            padding: 8rem 5%;
+            background: var(--warm-cream);
+        }
+
+        .gallery h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.5rem;
+            font-weight: 300;
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .painting-card {
+            background: white;
+            overflow: hidden;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .painting-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px var(--shadow);
+        }
+
+        .painting-image {
+            width: 100%;
+            height: 400px;
+            background: var(--gallery-gray);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .painting-image::before {
+            content: attr(data-title);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            color: #999;
+            text-align: center;
+            padding: 0 2rem;
+        }
+
+        .painting-info {
+            padding: 2rem;
+        }
+
+        .painting-info h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6rem;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+            color: var(--ink-black);
+        }
+
+        .painting-info .medium {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+
+        .price-tag {
+            font-size: 1.3rem;
+            color: var(--accent-rust);
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+        }
+
+        .order-button {
+            width: 100%;
+            padding: 0.9rem;
+            background: var(--ink-black);
+            color: white;
+            border: none;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Manrope', sans-serif;
+        }
+
+        .order-button:hover {
+            background: var(--accent-rust);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            max-width: 600px;
+            width: 100%;
+            padding: 3rem;
+            position: relative;
+            animation: modalSlideIn 0.4s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 2rem;
+            color: #999;
+            cursor: pointer;
+            background: none;
+            border: none;
+            line-height: 1;
+        }
+
+        .close-modal:hover {
+            color: var(--accent-rust);
+        }
+
+        .modal h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            color: #666;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--gallery-gray);
+            font-family: 'Manrope', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-rust);
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 1rem;
+            background: var(--accent-rust);
+            color: white;
+            border: none;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            font-family: 'Manrope', sans-serif;
+            margin-top: 1rem;
+        }
+
+        .submit-button:hover {
+            background: var(--accent-navy);
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 8rem 10%;
+            background: var(--canvas-white);
+            text-align: center;
+        }
+
+        .contact h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+        }
+
+        .contact p {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .contact-email {
+            font-size: 1.5rem;
+            color: var(--accent-rust);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .contact-email:hover {
+            color: var(--accent-navy);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--ink-black);
+            color: white;
+            padding: 3rem 5%;
+            text-align: center;
+        }
+
+        footer p {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .about {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+                padding: 5rem 5%;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                gap: 1.5rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero .subtitle {
+                font-size: 1rem;
+            }
+
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .modal-content {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">Stephen Sironi</div>
+        <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Boston Life as Art</h1>
+            <p class="subtitle">Urban landscapes capturing the soul of everyday moments</p>
+            <a href="#gallery" class="cta-button">VIEW COLLECTION</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="about-image" data-image="Stephen working in studio"></div>
+        <div class="about-content">
+            <h2>The Artist</h2>
+            <p>Boston artist Stephen Sironi paints life as he sees it. His work captures snapshots of everyday life in Boston — the beautiful complexity of urban existence where old buildings stand beside new, where people mingle yet remain solitary, where light plays against dark.</p>
+            <p>The world is not simple; it's very complicated. Beautiful, dirty, contrasting, invigorating, confrontational, and sometimes underwhelming in its predictability. Steve's paintings explore this rich tapestry of urban life.</p>
+            <p>Born and raised just south of Boston, Steve came of age in an artistic era of experimentation, discovery, and turmoil. With a degree in fine arts from UMass Amherst, Steve has lived a life full of creativity and artistic expression. He currently resides in central Ohio.</p>
+            <div class="signature">— Stephen Sironi</div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery" id="gallery">
+        <h2>Available Prints</h2>
+        <div class="gallery-grid">
+            <div class="painting-card">
+                <div class="painting-image" data-title="Boston Common Morning"></div>
+                <div class="painting-info">
+                    <h3>Boston Common Morning</h3>
+                    <p class="medium">Archival Print on Fine Art Paper</p>
+                    <div class="price-tag">From $125</div>
+                    <button class="order-button" onclick="openOrderModal('Boston Common Morning', 125)">ORDER PRINT</button>
+                </div>
+            </div>
+
+            <div class="painting-card">
+                <div class="painting-image" data-title="Back Bay Shadows"></div>
+                <div class="painting-info">
+                    <h3>Back Bay Shadows</h3>
+                    <p class="medium">Archival Print on Fine Art Paper</p>
+                    <div class="price-tag">From $125</div>
+                    <button class="order-button" onclick="openOrderModal('Back Bay Shadows', 125)">ORDER PRINT</button>
+                </div>
+            </div>
+
+            <div class="painting-card">
+                <div class="painting-image" data-title="Newbury Street Afternoon"></div>
+                <div class="painting-info">
+                    <h3>Newbury Street Afternoon</h3>
+                    <p class="medium">Archival Print on Fine Art Paper</p>
+                    <div class="price-tag">From $125</div>
+                    <button class="order-button" onclick="openOrderModal('Newbury Street Afternoon', 125)">ORDER PRINT</button>
+                </div>
+            </div>
+
+            <div class="painting-card">
+                <div class="painting-image" data-title="Charles River Dusk"></div>
+                <div class="painting-info">
+                    <h3>Charles River Dusk</h3>
+                    <p class="medium">Archival Print on Fine Art Paper</p>
+                    <div class="price-tag">From $125</div>
+                    <button class="order-button" onclick="openOrderModal('Charles River Dusk', 125)">ORDER PRINT</button>
+                </div>
+            </div>
+
+            <div class="painting-card">
+                <div class="painting-image" data-title="North End Nights"></div>
+                <div class="painting-info">
+                    <h3>North End Nights</h3>
+                    <p class="medium">Archival Print on Fine Art Paper</p>
+                    <div class="price-tag">From $125</div>
+                    <button class="order-button" onclick="openOrderModal('North End Nights', 125)">ORDER PRINT</button>
+                </div>
+            </div>
+
+            <div class="painting-card">
+                <div class="painting-image" data-title="Fenway Park Blues"></div>
+                <div class="painting-info">
+                    <h3>Fenway Park Blues</h3>
+                    <p class="medium">Archival Print on Fine Art Paper</p>
+                    <div class="price-tag">From $125</div>
+                    <button class="order-button" onclick="openOrderModal('Fenway Park Blues', 125)">ORDER PRINT</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <h2>Get in Touch</h2>
+        <p>Interested in original works, commissions, or have questions about prints? I'd love to hear from you.</p>
+        <a href="mailto:contact@stephensironi.com" class="contact-email">contact@stephensironi.com</a>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Stephen Sironi. All rights reserved.</p>
+    </footer>
+
+    <!-- Order Modal -->
+    <div class="modal" id="orderModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeOrderModal()">&times;</button>
+            <h3>Order Print</h3>
+            <form id="orderForm" onsubmit="handleOrder(event)">
+                <div class="form-group">
+                    <label>Artwork</label>
+                    <input type="text" id="artworkName" readonly>
+                </div>
+                
+                <div class="form-group">
+                    <label>Print Size</label>
+                    <select id="printSize" onchange="updatePrice()">
+                        <option value="125">12" × 16" - $125</option>
+                        <option value="175">16" × 20" - $175</option>
+                        <option value="250">20" × 24" - $250</option>
+                        <option value="350">24" × 30" - $350</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Your Name</label>
+                    <input type="text" id="customerName" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="customerEmail" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Shipping Address</label>
+                    <textarea id="shippingAddress" rows="3" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Additional Notes (Optional)</label>
+                    <textarea id="notes" rows="2"></textarea>
+                </div>
+
+                <button type="submit" class="submit-button">SUBMIT ORDER REQUEST</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let currentArtwork = '';
+        let basePrice = 125;
+
+        function openOrderModal(artworkName, price) {
+            currentArtwork = artworkName;
+            basePrice = price;
+            document.getElementById('artworkName').value = artworkName;
+            document.getElementById('orderModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeOrderModal() {
+            document.getElementById('orderModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+            document.getElementById('orderForm').reset();
+        }
+
+        function updatePrice() {
+            // Price updates are handled by the select options
+        }
+
+        function handleOrder(event) {
+            event.preventDefault();
+            
+            const formData = {
+                artwork: document.getElementById('artworkName').value,
+                size: document.getElementById('printSize').options[document.getElementById('printSize').selectedIndex].text,
+                name: document.getElementById('customerName').value,
+                email: document.getElementById('customerEmail').value,
+                address: document.getElementById('shippingAddress').value,
+                notes: document.getElementById('notes').value
+            };
+
+            // In production, this would send to your backend/payment processor
+            // For now, we'll create a mailto link with the order details
+            const subject = encodeURIComponent(`Print Order: ${formData.artwork}`);
+            const body = encodeURIComponent(`
+Order Request
+
+Artwork: ${formData.artwork}
+Size: ${formData.size}
+
+Customer Information:
+Name: ${formData.name}
+Email: ${formData.email}
+
+Shipping Address:
+${formData.address}
+
+Additional Notes:
+${formData.notes || 'None'}
+
+---
+Please respond with payment instructions and estimated shipping time.
+            `);
+
+            window.location.href = `mailto:contact@stephensironi.com?subject=${subject}&body=${body}`;
+            
+            closeOrderModal();
+            alert('Your order request has been prepared! Your email client will open to send the order.');
+        }
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('orderModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeOrderModal();
+            }
+        });
+    </script>
+</body>
+</html>
