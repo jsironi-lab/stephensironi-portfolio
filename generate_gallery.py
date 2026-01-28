@@ -139,8 +139,8 @@ def generate_tabbed_gallery(paintings):
     print(f"✅ Generated tabbed gallery: Boston ({counts['boston']}), Delaware ({counts['delaware']}), Other ({counts['misc']})")
     return html
 
-def update_index_html(featured_html):
-    """Update index.html with featured works."""
+def update_index_html(featured_html, paintings):
+    """Update index.html with featured works and hero backgrounds."""
     if not os.path.exists(INDEX_FILE):
         print(f"❌ {INDEX_FILE} not found!")
         return False
@@ -152,7 +152,7 @@ def update_index_html(featured_html):
     with open(INDEX_FILE, 'r', encoding='utf-8') as f:
         content = f.read()
     
-    # Find insertion point
+    # Update featured works section
     marker = '    <!-- Featured Works Section -->'
     end_marker = '    <!-- Contact Section -->'
     
@@ -163,10 +163,36 @@ def update_index_html(featured_html):
         print("❌ Could not find markers in index.html")
         return False
     
-    new_content = content[:start] + featured_html + '\n' + content[end:]
+    content = content[:start] + featured_html + '\n' + content[end:]
+    
+    # Update hero background paintings with actual featured paintings
+    featured = [p for p in paintings if p['featured']]
+    if featured:
+        # Take up to 3 featured paintings for hero rotation
+        hero_paintings = featured[:3]
+        
+        for i, painting in enumerate(hero_paintings, 1):
+            old_style = f'.hero-painting-{i} {{\n            background: linear-gradient'
+            new_style = f'.hero-painting-{i} {{\n            background-image: url(\'images/paintings/{painting["location"]}/{painting["filename"]}\');\n            background: linear-gradient'
+            
+            # Find and replace the hero painting style
+            placeholder = f'.hero-painting-{i} {{'
+            if placeholder in content:
+                # Find the closing brace for this class
+                start_pos = content.find(placeholder)
+                end_pos = content.find('}', start_pos)
+                old_block = content[start_pos:end_pos+1]
+                new_block = f'''.hero-painting-{i} {{
+            background-image: url('images/paintings/{painting["location"]}/{painting["filename"]}');
+            background-size: cover;
+            background-position: center;
+        }}'''
+                content = content.replace(old_block, new_block)
+        
+        print(f"✅ Updated hero with {len(hero_paintings)} featured painting backgrounds")
     
     with open(INDEX_FILE, 'w', encoding='utf-8') as f:
-        f.write(new_content)
+        f.write(content)
     
     print(f"✅ Updated {INDEX_FILE}")
     return True
@@ -226,7 +252,7 @@ def main():
     
     # Update files
     print("\n--- Updating Files ---")
-    if not update_index_html(featured_html):
+    if not update_index_html(featured_html, paintings):
         return
     if not update_gallery_html(gallery_html):
         return

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stephen Sironi | Life as Art</title>
+    <title>Stephen Sironi | Boston Life in Paint</title>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Manrope:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -36,14 +36,14 @@
             top: 0;
             left: 0;
             right: 0;
-            background: rgba(26, 26, 26, 0.95);
+            background: rgba(250, 250, 248, 0.95);
             backdrop-filter: blur(10px);
             z-index: 1000;
             padding: 1.5rem 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid var(--gallery-gray);
         }
 
         .logo {
@@ -51,7 +51,7 @@
             font-size: 1.5rem;
             font-weight: 300;
             letter-spacing: 0.5px;
-            color: white;
+            color: var(--ink-black);
             text-decoration: none;
         }
 
@@ -63,7 +63,7 @@
 
         .nav-links a {
             text-decoration: none;
-            color: rgba(255, 255, 255, 0.9);
+            color: var(--ink-black);
             font-size: 0.9rem;
             font-weight: 400;
             letter-spacing: 0.5px;
@@ -87,88 +87,45 @@
         }
 
         .nav-links a:hover {
-            color: white;
+            color: var(--accent-rust);
         }
 
-        /* Hero Section with Rotating Paintings */
+        /* Hero Section */
         .hero {
-            margin-top: 0;
-            height: 100vh;
-            min-height: 700px;
+            margin-top: 80px;
+            height: 85vh;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
+            background: linear-gradient(135deg, var(--warm-cream) 0%, var(--canvas-white) 100%);
             overflow: hidden;
         }
 
-        .hero-background {
+        .hero::before {
+            content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            z-index: 1;
-        }
-
-        .hero-painting {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-size: cover;
-            background-position: center;
-            opacity: 0;
-            transition: opacity 2s ease-in-out;
-        }
-
-        .hero-painting.active {
-            opacity: 1;
-        }
-
-        /* HERO PAINTINGS - Will be populated by script */
-        /* Placeholder gradients - replace with actual painting backgrounds */
-        .hero-painting-1 {
-            background: linear-gradient(135deg, #2c3e50 0%, #c05746 100%);
-        }
-
-        .hero-painting-2 {
-            background: linear-gradient(45deg, #c05746 0%, #2c3e50 100%);
-        }
-
-        .hero-painting-3 {
-            background: linear-gradient(90deg, #2c3e50 30%, #c05746 100%);
-        }
-
-        .hero-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(
-                to bottom,
-                rgba(26, 26, 26, 0.7) 0%,
-                rgba(26, 26, 26, 0.5) 50%,
-                rgba(26, 26, 26, 0.7) 100%
-            );
-            z-index: 2;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(192, 87, 70, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(44, 62, 80, 0.03) 0%, transparent 50%);
         }
 
         .hero-content {
             text-align: center;
-            z-index: 10;
+            z-index: 1;
             max-width: 900px;
             padding: 0 2rem;
-            position: relative;
-            animation: fadeInUp 1.4s ease-out;
+            animation: fadeInUp 1.2s ease-out;
         }
 
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(40px);
+                transform: translateY(30px);
             }
             to {
                 opacity: 1;
@@ -178,72 +135,39 @@
 
         .hero h1 {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 5.5rem;
+            font-size: 4.5rem;
             font-weight: 300;
-            line-height: 1;
-            margin-bottom: 2rem;
-            letter-spacing: 2px;
-            color: white;
-            text-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -1px;
         }
 
         .hero .subtitle {
-            font-size: 1.8rem;
-            color: rgba(255, 255, 255, 0.95);
+            font-size: 1.3rem;
+            color: #666;
             font-weight: 300;
-            margin-bottom: 3.5rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+            margin-bottom: 3rem;
+            letter-spacing: 1px;
         }
 
         .cta-button {
             display: inline-block;
-            padding: 1.2rem 3rem;
-            background: white;
-            color: var(--ink-black);
+            padding: 1rem 2.5rem;
+            background: var(--accent-rust);
+            color: white;
             text-decoration: none;
             font-size: 0.95rem;
-            letter-spacing: 1.5px;
-            font-weight: 500;
+            letter-spacing: 1px;
             transition: all 0.3s ease;
-            border: 2px solid white;
-            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            font-family: 'Manrope', sans-serif;
         }
 
         .cta-button:hover {
-            background: transparent;
-            color: white;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Scroll Indicator */
-        .scroll-indicator {
-            position: absolute;
-            bottom: 3rem;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 10;
-            animation: bounce 2s infinite;
-        }
-
-        .scroll-indicator::before {
-            content: '↓';
-            font-size: 2rem;
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
-                transform: translateX(-50%) translateY(0);
-            }
-            40% {
-                transform: translateX(-50%) translateY(-10px);
-            }
-            60% {
-                transform: translateX(-50%) translateY(-5px);
-            }
+            background: var(--accent-navy);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
         }
 
         /* About Section */
@@ -310,8 +234,8 @@
 
         .featured-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 3rem;
             max-width: 1400px;
             margin: 0 auto 4rem;
         }
@@ -329,7 +253,7 @@
 
         .painting-image {
             width: 100%;
-            height: 350px;
+            height: 450px;
             background: var(--gallery-gray);
             position: relative;
             overflow: hidden;
@@ -567,11 +491,7 @@
         /* Responsive */
         @media (max-width: 968px) {
             .hero h1 {
-                font-size: 3.5rem;
-            }
-
-            .hero .subtitle {
-                font-size: 1.2rem;
+                font-size: 3rem;
             }
 
             .about {
@@ -587,25 +507,15 @@
             .nav-links {
                 gap: 1.5rem;
             }
-
-            nav {
-                background: rgba(26, 26, 26, 0.98);
-            }
         }
 
         @media (max-width: 640px) {
-            .hero {
-                min-height: 600px;
-            }
-
             .hero h1 {
-                font-size: 2.5rem;
-                letter-spacing: 1px;
+                font-size: 2.2rem;
             }
 
             .hero .subtitle {
                 font-size: 1rem;
-                letter-spacing: 2px;
             }
 
             nav {
@@ -626,11 +536,6 @@
                 grid-template-columns: 1fr;
                 gap: 2rem;
             }
-
-            .cta-button {
-                padding: 1rem 2rem;
-                font-size: 0.85rem;
-            }
         }
     </style>
 </head>
@@ -645,21 +550,13 @@
         </ul>
     </nav>
 
-    <!-- Hero Section with Rotating Paintings -->
+    <!-- Hero Section -->
     <section class="hero">
-        <div class="hero-background">
-            <!-- HERO PAINTINGS - Will be populated by script with actual paintings -->
-            <div class="hero-painting hero-painting-1 active"></div>
-            <div class="hero-painting hero-painting-2"></div>
-            <div class="hero-painting hero-painting-3"></div>
-        </div>
-        <div class="hero-overlay"></div>
         <div class="hero-content">
-            <h1>Stephen Sironi</h1>
-            <p class="subtitle">Life as Art</p>
-            <a href="#featured" class="cta-button">View Featured Works</a>
+            <h1>Boston Life as Art</h1>
+            <p class="subtitle">Urban landscapes capturing the soul of everyday moments</p>
+            <a href="#featured" class="cta-button">VIEW FEATURED WORKS</a>
         </div>
-        <div class="scroll-indicator"></div>
     </section>
 
     <!-- About Section -->
@@ -669,8 +566,8 @@
         </div>
         <div class="about-content">
             <h2>The Artist</h2>
-            <p>Boston artist Stephen Sironi paints life as he sees it. His work captures snapshots of everyday life — the beautiful complexity of urban existence where old buildings stand beside new, where people mingle yet remain solitary, where light plays against dark.</p>
-            <p>The world is not simple; it's very complicated. Beautiful, dirty, contrasting, invigorating, confrontational, and sometimes underwhelming in its predictability. Steve's paintings explore this rich tapestry of life.</p>
+            <p>Boston artist Stephen Sironi paints life as he sees it. His work captures snapshots of everyday life in Boston — the beautiful complexity of urban existence where old buildings stand beside new, where people mingle yet remain solitary, where light plays against dark.</p>
+            <p>The world is not simple; it's very complicated. Beautiful, dirty, contrasting, invigorating, confrontational, and sometimes underwhelming in its predictability. Steve's paintings explore this rich tapestry of urban life.</p>
             <p>Born and raised just south of Boston, Steve came of age in an artistic era of experimentation, discovery, and turmoil. With a degree in fine arts from UMass Amherst, Steve has lived a life full of creativity and artistic expression. He currently resides in central Ohio.</p>
             <div class="signature">— Stephen Sironi</div>
         </div>
@@ -678,12 +575,81 @@
 
     <!-- FEATURED WORKS SECTION - Generated by script -->
     <!-- Featured Works Section -->
+    <section class="featured-gallery" id="featured">
+        <h2>Featured Works</h2>
+        <p class="section-subtitle">A curated selection of signature pieces</p>
+        <div class="featured-grid">
+            <div class="painting-card">
+                <div class="painting-image" style="background-image: url('images/paintings/boston/midday-crossing.jpg'); background-size: cover; background-position: center;"></div>
+                <div class="painting-info">
+                    <h3>Midday Crossing</h3>
+                    <p class="medium">Acrylic on Canvas</p>
+                    <p class="description">Pedestrians cross a downtown Boston intersection during the middle of the day. Figures move in multiple directions as storefronts, street signs, and passing traffic frame the scene.</p>
+                    <div class="price-tag">From $300</div>
+                    <button class="order-button" onclick="openOrderModal('Midday Crossing', 300)">ORDER PRINT</button>
+                </div>
+            </div>
+            <div class="painting-card">
+                <div class="painting-image" style="background-image: url('images/paintings/misc/bathers-at-nantasket-beach-no-1.jpg'); background-size: cover; background-position: center;"></div>
+                <div class="painting-info">
+                    <h3>Bathers at Nantasket Beach No 1</h3>
+                    <p class="medium">Acrylic on Canvas</p>
+                    <p class="description">Families and children gather along the shoreline at Nantasket Beach on a summer afternoon. Some wade in the shallows while others stand back, watching the water and the activity around them.</p>
+                    <div class="price-tag">From $300</div>
+                    <button class="order-button" onclick="openOrderModal('Bathers at Nantasket Beach No 1', 300)">ORDER PRINT</button>
+                </div>
+            </div>
+            <div class="painting-card">
+                <div class="painting-image" style="background-image: url('images/paintings/misc/bathers-at-nantasket-beach-no-2.jpg'); background-size: cover; background-position: center;"></div>
+                <div class="painting-info">
+                    <h3>Bathers at Nantasket Beach No 2</h3>
+                    <p class="medium">Acrylic on Canvas</p>
+                    <p class="description">A wide view of Nantasket Beach on a busy summer day, with beachgoers seated in chairs and tents while others move between sand and surf. The scene captures the density and casual pace of a crowded shoreline.</p>
+                    <div class="price-tag">From $300</div>
+                    <button class="order-button" onclick="openOrderModal('Bathers at Nantasket Beach No 2', 300)">ORDER PRINT</button>
+                </div>
+            </div>
+            <div class="painting-card">
+                <div class="painting-image" style="background-image: url('images/paintings/boston/downtown-crossing-no-1.jpg'); background-size: cover; background-position: center;"></div>
+                <div class="painting-info">
+                    <h3>Downtown Crossing No 1</h3>
+                    <p class="medium">Acrylic on Canvas</p>
+                    <p class="description">Downtown Crossing with pedestrians crossing between shops and buildings. The scene captures the steady flow of foot traffic and everyday movement through the city.</p>
+                    <div class="price-tag">From $300</div>
+                    <button class="order-button" onclick="openOrderModal('Downtown Crossing No 1', 300)">ORDER PRINT</button>
+                </div>
+            </div>
+            <div class="painting-card">
+                <div class="painting-image" style="background-image: url('images/paintings/boston/northend-scene.jpg'); background-size: cover; background-position: center;"></div>
+                <div class="painting-info">
+                    <h3>Northend Scene</h3>
+                    <p class="medium">Acrylic on Canvas</p>
+                    <p class="description">Pedestrians walk along a narrow street in Boston’s North End, passing storefronts, signs, and a busy intersection. Streetlights, traffic signals, and parked cars frame the scene as people move through the neighborhood.</p>
+                    <div class="price-tag">From $300</div>
+                    <button class="order-button" onclick="openOrderModal('Northend Scene', 300)">ORDER PRINT</button>
+                </div>
+            </div>
+            <div class="painting-card">
+                <div class="painting-image" style="background-image: url('images/paintings/boston/outside-peet's.jpg'); background-size: cover; background-position: center;"></div>
+                <div class="painting-info">
+                    <h3>Outside Peet's</h3>
+                    <p class="medium">Acrylic on Canvas</p>
+                    <p class="description">People gather and pass by outside a coffee shop on a busy downtown street. Pedestrians wait at the corner while others move through the intersection, with storefronts and traffic framing the scene.</p>
+                    <div class="price-tag">From $300</div>
+                    <button class="order-button" onclick="openOrderModal('Outside Peet's', 300)">ORDER PRINT</button>
+                </div>
+            </div>
+        </div>
+        <div class="view-all-cta">
+            <a href="gallery.html" class="view-all-button">VIEW COMPLETE COLLECTION</a>
+        </div>
+    </section>
 
     <!-- Contact Section -->
     <section class="contact" id="contact">
         <h2>Get in Touch</h2>
         <p>Interested in original works, commissions, or have questions about prints? I'd love to hear from you.</p>
-        <a href="/cdn-cgi/l/email-protection#90f3fffee4f1f3e4d0e3e4f5e0f8f5fee3f9e2fffef9bef3fffd" class="contact-email"><span class="__cf_email__" data-cfemail="177478796376746357646372677f7279647e6578797e3974787a">[email&#160;protected]</span></a>
+        <a href="mailto:contact@stephensironi.com" class="contact-email">contact@stephensironi.com</a>
     </section>
 
     <!-- Footer -->
@@ -737,22 +703,7 @@
         </div>
     </div>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-        // Hero Painting Rotation
-        let currentPainting = 0;
-        const heroPaintings = document.querySelectorAll('.hero-painting');
-        const totalPaintings = heroPaintings.length;
-
-        function rotateHeroPainting() {
-            heroPaintings[currentPainting].classList.remove('active');
-            currentPainting = (currentPainting + 1) % totalPaintings;
-            heroPaintings[currentPainting].classList.add('active');
-        }
-
-        // Rotate paintings every 6 seconds
-        setInterval(rotateHeroPainting, 6000);
-
-        // Modal functions
+    <script>
         let currentArtwork = '';
         let basePrice = 125;
 
@@ -771,7 +722,7 @@
         }
 
         function updatePrice() {
-            // Price updates handled by select options
+            // Price updates are handled by the select options
         }
 
         function handleOrder(event) {
@@ -827,4 +778,12 @@ Please respond with payment instructions and estimated shipping time.
             });
         });
 
-    
+        // Close modal when clicking outside
+        document.getElementById('orderModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeOrderModal();
+            }
+        });
+    </script>
+</body>
+</html>
