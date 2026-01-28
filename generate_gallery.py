@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """
-Painting Gallery Generator for Stephen Sironi Portfolio
-This script reads painting data from a CSV and generates HTML gallery cards.
-Designed to be used with Claude Code for efficient bulk import.
+Painting Gallery Generator for Stephen Sironi Portfolio - V3
+Generates TWO pages:
+  - index.html: Featured Works only
+  - gallery.html: Full collection with tabbed navigation
 """
 
 import csv
@@ -11,8 +12,10 @@ from pathlib import Path
 
 # Configuration
 CSV_FILE = "paintings-data.csv"
-HTML_FILE = "index.html"
-BACKUP_FILE = "index.html.backup"
+INDEX_FILE = "index.html"
+GALLERY_FILE = "gallery.html"
+INDEX_BACKUP = "index.html.backup"
+GALLERY_BACKUP = "gallery.html.backup"
 
 def read_paintings_data(csv_path):
     """Read painting data from CSV file."""
@@ -20,7 +23,6 @@ def read_paintings_data(csv_path):
     
     if not os.path.exists(csv_path):
         print(f"❌ Error: {csv_path} not found!")
-        print("Please create the CSV file with your painting data first.")
         return None
     
     with open(csv_path, 'r', encoding='utf-8') as f:
@@ -32,48 +34,40 @@ def read_paintings_data(csv_path):
                 'filename': row['filename'].strip(),
                 'medium': row['medium'].strip(),
                 'price': row['price'].strip(),
-                'description': row['description'].strip()
+                'description': row['description'].strip(),
+                'featured': row.get('featured', '').strip().lower() == 'yes'
             })
     
     print(f"✅ Read {len(paintings)} paintings from {csv_path}")
     return paintings
 
 def validate_paintings_data(paintings):
-    """Validate that all required data is present and image files exist."""
+    """Validate data and image files."""
     valid = True
     
     for i, painting in enumerate(paintings, 1):
-        # Check required fields
-        required_fields = ['title', 'location', 'filename', 'medium', 'price', 'description']
-        for field in required_fields:
+        required = ['title', 'location', 'filename', 'medium', 'price', 'description']
+        for field in required:
             if not painting.get(field):
                 print(f"❌ Row {i}: Missing {field}")
                 valid = False
         
-        # Validate location
         if painting['location'] not in ['boston', 'delaware', 'misc']:
-            print(f"❌ Row {i}: Invalid location '{painting['location']}' (must be boston, delaware, or misc)")
+            print(f"❌ Row {i}: Invalid location '{painting['location']}'")
             valid = False
         
-        # Check if image file exists
         image_path = f"images/paintings/{painting['location']}/{painting['filename']}"
         if not os.path.exists(image_path):
             print(f"⚠️  Row {i}: Image not found: {image_path}")
-            print(f"   Make sure the file exists and the filename in CSV matches exactly!")
             valid = False
     
     if valid:
-        print("✅ All paintings data validated successfully!")
-    
+        print("✅ All data validated!")
     return valid
 
-def generate_gallery_html(paintings):
-    """Generate HTML for all painting gallery cards."""
-    html_parts = []
-    
-    for painting in paintings:
-        card_html = f'''
-            <div class="painting-card">
+def generate_painting_card(painting):
+    """Generate HTML for a painting card."""
+    return f'''            <div class="painting-card">
                 <div class="painting-image" style="background-image: url('images/paintings/{painting['location']}/{painting['filename']}'); background-size: cover; background-position: center;"></div>
                 <div class="painting-info">
                     <h3>{painting['title']}</h3>
@@ -83,139 +77,183 @@ def generate_gallery_html(paintings):
                     <button class="order-button" onclick="openOrderModal('{painting['title']}', {painting['price']})">ORDER PRINT</button>
                 </div>
             </div>'''
-        
-        html_parts.append(card_html)
-    
-    return '\n'.join(html_parts)
 
-def update_html_file(html_file, gallery_html):
-    """Update the index.html file with new gallery content."""
+def generate_featured_section(paintings):
+    """Generate featured works HTML for index.html."""
+    featured = [p for p in paintings if p['featured']]
     
-    # Create backup
-    if os.path.exists(html_file):
-        import shutil
-        shutil.copy(html_file, BACKUP_FILE)
-        print(f"✅ Created backup: {BACKUP_FILE}")
+    if not featured:
+        print("⚠️  No featured paintings. Add 'yes' to featured column for 4-6 paintings.")
+        return ""
     
-    # Read current HTML
-    with open(html_file, 'r', encoding='utf-8') as f:
-        content = f.read()
+    cards = '\n'.join([generate_painting_card(p) for p in featured])
     
-    # Find the gallery grid section
-    start_marker = '<div class="gallery-grid">'
-    end_marker = '</div>\n    </section>\n\n    <!-- Contact Section -->'
+    html = f'''    <!-- Featured Works Section -->
+    <section class="featured-gallery" id="featured">
+        <h2>Featured Works</h2>
+        <p class="section-subtitle">A curated selection of signature pieces</p>
+        <div class="featured-grid">
+{cards}
+        </div>
+        <div class="view-all-cta">
+            <a href="gallery.html" class="view-all-button">VIEW COMPLETE COLLECTION</a>
+        </div>
+    </section>
+'''
     
-    start_idx = content.find(start_marker)
-    end_idx = content.find(end_marker)
+    print(f"✅ Generated featured section with {len(featured)} paintings")
+    return html
+
+def generate_tabbed_gallery(paintings):
+    """Generate tabbed gallery HTML for gallery.html."""
+    by_location = {
+        'boston': [p for p in paintings if p['location'] == 'boston'],
+        'delaware': [p for p in paintings if p['location'] == 'delaware'],
+        'misc': [p for p in paintings if p['location'] == 'misc']
+    }
     
-    if start_idx == -1 or end_idx == -1:
-        print("❌ Error: Could not find gallery section in HTML!")
-        print("Make sure index.html has the correct structure.")
+    tabs = []
+    for loc in ['boston', 'delaware', 'misc']:
+        if not by_location[loc]:
+            continue
+        cards = '\n'.join([generate_painting_card(p) for p in by_location[loc]])
+        tabs.append(f'''        <div class="tab-content" id="{loc}-tab" style="display: none;">
+            <div class="gallery-grid">
+{cards}
+            </div>
+        </div>''')
+    
+    html = f'''    <!-- Tabbed Gallery Section -->
+    <div class="gallery-container">
+        <div class="tab-navigation">
+            <button class="tab-button active" onclick="showTab('boston')">Boston, MA</button>
+            <button class="tab-button" onclick="showTab('delaware')">Delaware, OH</button>
+            <button class="tab-button" onclick="showTab('misc')">Other Pieces</button>
+        </div>
+
+{chr(10).join(tabs)}
+    </div>
+'''
+    
+    counts = {k: len(v) for k, v in by_location.items()}
+    print(f"✅ Generated tabbed gallery: Boston ({counts['boston']}), Delaware ({counts['delaware']}), Other ({counts['misc']})")
+    return html
+
+def update_index_html(featured_html):
+    """Update index.html with featured works."""
+    if not os.path.exists(INDEX_FILE):
+        print(f"❌ {INDEX_FILE} not found!")
         return False
     
-    # Replace gallery content
-    new_content = (
-        content[:start_idx + len(start_marker)] +
-        '\n' + gallery_html + '\n        ' +
-        content[end_idx:]
-    )
+    import shutil
+    shutil.copy(INDEX_FILE, INDEX_BACKUP)
+    print(f"✅ Created backup: {INDEX_BACKUP}")
     
-    # Write updated HTML
-    with open(html_file, 'w', encoding='utf-8') as f:
-        f.write(new_content)
-    
-    print(f"✅ Updated {html_file} with {gallery_html.count('painting-card')} paintings!")
-
-    return True
-
-def add_description_css():
-    """Add CSS for description paragraph if not already present."""
-    with open(HTML_FILE, 'r', encoding='utf-8') as f:
+    with open(INDEX_FILE, 'r', encoding='utf-8') as f:
         content = f.read()
     
-    # Check if description CSS exists
-    if '.painting-info .description' in content:
-        return  # Already exists
+    # Find insertion point
+    marker = '    <!-- Featured Works Section -->'
+    end_marker = '    <!-- Contact Section -->'
     
-    # Find where to insert (after .painting-info .medium)
-    insert_after = '''.painting-info .medium {
-            font-size: 0.9rem;
-            color: #888;
-            margin-bottom: 1.5rem;
-            font-style: italic;
-        }'''
+    start = content.find(marker)
+    end = content.find(end_marker)
     
-    description_css = '''
-
-        .painting-info .description {
-            font-size: 0.95rem;
-            color: #666;
-            line-height: 1.6;
-            margin-bottom: 1.5rem;
-        }'''
+    if start == -1 or end == -1:
+        print("❌ Could not find markers in index.html")
+        return False
     
-    new_content = content.replace(insert_after, insert_after + description_css)
+    new_content = content[:start] + featured_html + '\n' + content[end:]
     
-    with open(HTML_FILE, 'w', encoding='utf-8') as f:
+    with open(INDEX_FILE, 'w', encoding='utf-8') as f:
         f.write(new_content)
     
-    print("✅ Added description CSS styling")
+    print(f"✅ Updated {INDEX_FILE}")
+    return True
+
+def update_gallery_html(gallery_html):
+    """Update gallery.html with full collection."""
+    if not os.path.exists(GALLERY_FILE):
+        print(f"❌ {GALLERY_FILE} not found!")
+        return False
+    
+    import shutil
+    shutil.copy(GALLERY_FILE, GALLERY_BACKUP)
+    print(f"✅ Created backup: {GALLERY_BACKUP}")
+    
+    with open(GALLERY_FILE, 'r', encoding='utf-8') as f:
+        content = f.read()
+    
+    marker = '    <!-- Tabbed Gallery Section -->'
+    end_marker = '    <!-- Footer -->'
+    
+    start = content.find(marker)
+    end = content.find(end_marker)
+    
+    if start == -1 or end == -1:
+        print("❌ Could not find markers in gallery.html")
+        return False
+    
+    new_content = content[:start] + gallery_html + '\n' + content[end:]
+    
+    with open(GALLERY_FILE, 'w', encoding='utf-8') as f:
+        f.write(new_content)
+    
+    print(f"✅ Updated {GALLERY_FILE}")
+    return True
 
 def main():
-    """Main execution function."""
+    """Main execution."""
     print("\n" + "="*60)
-    print("  Stephen Sironi Gallery Generator")
+    print("  Stephen Sironi Gallery Generator V3")
+    print("  Two-Page System: Featured + Full Gallery")
     print("="*60 + "\n")
     
-    # Step 1: Read CSV data
+    # Read and validate
     paintings = read_paintings_data(CSV_FILE)
-    if paintings is None:
+    if not paintings:
         return
     
-    if len(paintings) == 0:
-        print("❌ No paintings found in CSV. Please add your painting data first.")
-        return
-    
-    # Step 2: Validate data
     print("\n--- Validating Data ---")
     if not validate_paintings_data(paintings):
-        print("\n❌ Validation failed. Please fix the issues above and try again.")
+        print("\n❌ Fix issues and try again.")
         return
     
-    # Step 3: Generate HTML
-    print("\n--- Generating Gallery HTML ---")
-    gallery_html = generate_gallery_html(paintings)
+    # Generate HTML
+    print("\n--- Generating HTML ---")
+    featured_html = generate_featured_section(paintings)
+    gallery_html = generate_tabbed_gallery(paintings)
     
-    # Step 4: Update HTML file
-    print("\n--- Updating index.html ---")
-    if not update_html_file(HTML_FILE, gallery_html):
+    # Update files
+    print("\n--- Updating Files ---")
+    if not update_index_html(featured_html):
+        return
+    if not update_gallery_html(gallery_html):
         return
     
-    # Step 5: Add description CSS
-    add_description_css()
+    # Summary
+    featured_count = sum(1 for p in paintings if p['featured'])
+    boston = sum(1 for p in paintings if p['location'] == 'boston')
+    delaware = sum(1 for p in paintings if p['location'] == 'delaware')
+    misc = sum(1 for p in paintings if p['location'] == 'misc')
     
-    # Step 6: Summary
     print("\n" + "="*60)
-    print("✅ SUCCESS! Gallery updated with all paintings.")
+    print("✅ SUCCESS! Both pages updated.")
     print("="*60)
     print(f"\n📊 Summary:")
     print(f"   • Total paintings: {len(paintings)}")
-    print(f"   • Boston: {sum(1 for p in paintings if p['location'] == 'boston')}")
-    print(f"   • Delaware: {sum(1 for p in paintings if p['location'] == 'delaware')}")
-    print(f"   • Misc: {sum(1 for p in paintings if p['location'] == 'misc')}")
+    print(f"   • Featured (index.html): {featured_count}")
+    print(f"   • Boston, MA: {boston}")
+    print(f"   • Delaware, OH: {delaware}")
+    print(f"   • Other Pieces: {misc}")
     print(f"\n📁 Files:")
-    print(f"   • Updated: {HTML_FILE}")
-    print(f"   • Backup: {BACKUP_FILE}")
+    print(f"   • {INDEX_FILE} - Featured works only")
+    print(f"   • {GALLERY_FILE} - Full collection with tabs")
     print(f"\n🚀 Next Steps:")
-    print(f"   1. Open index.html in your browser to preview")
-    print(f"   2. If it looks good:")
-    print(f"      git add .")
-    print(f"      git commit -m 'Add all paintings to gallery'")
-    print(f"      git push")
-    print(f"   3. If you need to make changes:")
-    print(f"      • Edit paintings-data.csv")
-    print(f"      • Run this script again")
-    print(f"      • (Your backup is safe at {BACKUP_FILE})")
+    print(f"   1. Preview index.html (home page)")
+    print(f"   2. Preview gallery.html (full gallery)")
+    print(f"   3. Test navigation between pages")
+    print(f"   4. If good: git add . && git commit -m 'Two-page gallery' && git push")
     print("\n")
 
 if __name__ == "__main__":
