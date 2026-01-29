@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order a Print | Stephen Sironi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@200;300;400&family=Work+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background: #fff;
+            color: #000;
+        }
+
+        /* Top navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 2rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        .nav-left a {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.3rem;
+            font-weight: 300;
+            color: #000;
+            text-decoration: none;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-right {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .nav-right a {
+            font-family: 'Work Sans', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 300;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: rgba(0, 0, 0, 0.6);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-right a.active,
+        .nav-right a:hover {
+            color: #000;
+        }
+
+        .nav-right a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #000;
+            transition: width 0.3s ease;
+        }
+
+        .nav-right a.active::after,
+        .nav-right a:hover::after {
+            width: 100%;
+        }
+
+        /* Form layout */
+        .form-section {
+            margin-top: 80px;
+            min-height: calc(100vh - 80px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 2rem;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .form-container h1 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 2.5rem;
+            font-weight: 200;
+            margin-bottom: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        .form-container .subtitle {
+            font-size: 0.9rem;
+            font-weight: 300;
+            color: rgba(0, 0, 0, 0.5);
+            margin-bottom: 3rem;
+            line-height: 1.6;
+        }
+
+        .form-group {
+            margin-bottom: 1.8rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 400;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: rgba(0, 0, 0, 0.5);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.9rem 0;
+            border: none;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+            font-family: 'Work Sans', sans-serif;
+            font-size: 1rem;
+            font-weight: 300;
+            color: #000;
+            background: transparent;
+            transition: border-color 0.3s ease;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-bottom-color: #000;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-group select {
+            cursor: pointer;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 8L1 3h10z' fill='%23999'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0 center;
+        }
+
+        .submit-button {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 1rem 2.5rem;
+            background: #000;
+            color: #fff;
+            border: 1px solid #000;
+            font-family: 'Work Sans', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-button:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1.5rem;
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .nav-right {
+                gap: 1.5rem;
+                flex-wrap: wrap;
+            }
+
+            .form-section {
+                padding: 3rem 1.5rem;
+            }
+
+            .form-container h1 {
+                font-size: 2rem;
+            }
+        }
+
+        /* Smooth page transitions */
+        body.fade-out {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-left">
+            <a href="index.html">Stephen Sironi</a>
+        </div>
+        <div class="nav-right">
+            <a href="boston.html">Boston, MA</a>
+            <a href="delaware.html">Delaware, OH</a>
+            <a href="misc.html">Other Works</a>
+            <a href="about.html">About</a>
+            <a href="contact.html" class="active">Contact</a>
+        </div>
+    </nav>
+
+    <section class="form-section">
+        <div class="form-container">
+            <h1>Order a Print</h1>
+            <p class="subtitle">Select a painting, choose your size, and submit your request. I'll respond with payment details and shipping information.</p>
+
+            <form id="orderForm" onsubmit="handleOrder(event)">
+                <div class="form-group">
+                    <label>Painting</label>
+                    <select id="paintingSelect" required>
+                        <option value="">— Select a painting —</option>
+                        <optgroup label="Boston, MA">
+                            <option value="Midday Crossing">Midday Crossing</option>
+                            <option value="Downtown Crossing No 1">Downtown Crossing No 1</option>
+                            <option value="Fifth Floor View">Fifth Floor View</option>
+                            <option value="Lunchtime Stroll">Lunchtime Stroll</option>
+                            <option value="Northend Scene">Northend Scene</option>
+                            <option value="Outside Peet's">Outside Peet's</option>
+                            <option value="Park Street Station">Park Street Station</option>
+                            <option value="Pizza">Pizza</option>
+                            <option value="Rainy Day in Boston">Rainy Day in Boston</option>
+                            <option value="Rainy Day in the Northend">Rainy Day in the Northend</option>
+                            <option value="View Along Salem Street">View Along Salem Street</option>
+                            <option value="Downtown Grey">Downtown Grey</option>
+                            <option value="Spring Street">Spring Street</option>
+                            <option value="Red Line">Red Line</option>
+                            <option value="View From Charlestown">View From Charlestown</option>
+                            <option value="Waiting No 1">Waiting No 1</option>
+                            <option value="Waiting for the T">Waiting for the T</option>
+                        </optgroup>
+                        <optgroup label="Delaware, OH">
+                            <option value="Wondering">Wondering</option>
+                            <option value="At the Parade">At the Parade</option>
+                            <option value="Browsing">Browsing</option>
+                            <option value="Clancey's">Clancey's</option>
+                            <option value="Dairy Depot">Dairy Depot</option>
+                            <option value="Diner">Diner</option>
+                            <option value="Downtown Summer Evening">Downtown Summer Evening</option>
+                            <option value="Crossing">Crossing</option>
+                            <option value="Father and Son Conversation">Father and Son Conversation</option>
+                            <option value="Hayes">Hayes</option>
+                            <option value="Looking out the Window">Looking out the Window</option>
+                            <option value="Street Walking">Street Walking</option>
+                            <option value="Two Men Walking">Two Men Walking</option>
+                            <option value="Waiting No 2">Waiting No 2</option>
+                            <option value="Watching the Eclipse">Watching the Eclipse</option>
+                        </optgroup>
+                        <optgroup label="Other Works">
+                            <option value="Bathers at Nantasket Beach No 1">Bathers at Nantasket Beach No 1</option>
+                            <option value="Bathers at Nantasket Beach No 2">Bathers at Nantasket Beach No 2</option>
+                            <option value="Hingham Farmers Market">Hingham Farmers Market</option>
+                            <option value="At Plymouth Farmers Market">At Plymouth Farmers Market</option>
+                            <option value="Dancing in the Street Provincetown">Dancing in the Street Provincetown</option>
+                            <option value="Suzette No 1">Suzette No 1</option>
+                            <option value="Lobster Shack">Lobster Shack</option>
+                            <option value="Man in Pink Shirt">Man in Pink Shirt</option>
+                            <option value="Moshing">Moshing</option>
+                            <option value="Only Have Eyes for You">Only Have Eyes for You</option>
+                            <option value="Pipers on Parade">Pipers on Parade</option>
+                            <option value="Red's Eats">Red's Eats</option>
+                            <option value="Some People Like to Dance">Some People Like to Dance</option>
+                            <option value="Doughnuts">Doughnuts</option>
+                            <option value="Linda">Linda</option>
+                            <option value="Sale Day in Damariscotta">Sale Day in Damariscotta</option>
+                            <option value="Skiier in Gondola">Skiier in Gondola</option>
+                            <option value="Man in Beige">Man in Beige</option>
+                            <option value="Kayaks">Kayaks</option>
+                            <option value="Two Men at a Coffe Shop">Two Men at a Coffe Shop</option>
+                            <option value="Where are the Sheep">Where are the Sheep</option>
+                            <option value="Woman in Plymouth">Woman in Plymouth</option>
+                            <option value="Young Man at the Ready">Young Man at the Ready</option>
+                            <option value="Suzette No 2">Suzette No 2</option>
+                            <option value="Self Portrait">Self Portrait</option>
+                        </optgroup>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Print Size</label>
+                    <select id="printSize" required>
+                        <option value="125">12" × 16" — $125</option>
+                        <option value="175">16" × 20" — $175</option>
+                        <option value="250">20" × 24" — $250</option>
+                        <option value="350">24" × 30" — $350</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Your Name</label>
+                    <input type="text" id="customerName" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="customerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label>Shipping Address</label>
+                    <textarea id="shippingAddress" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Additional Notes (Optional)</label>
+                    <textarea id="notes" rows="2"></textarea>
+                </div>
+                <button type="submit" class="submit-button">Submit Order Request</button>
+            </form>
+        </div>
+    </section>
+
+    <script>
+        // Pre-select painting from URL parameter
+        (function() {
+            const params = new URLSearchParams(window.location.search);
+            const painting = params.get('painting');
+            if (painting) {
+                const select = document.getElementById('paintingSelect');
+                for (let i = 0; i < select.options.length; i++) {
+                    if (select.options[i].value === painting) {
+                        select.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+        })();
+
+        function handleOrder(event) {
+            event.preventDefault();
+            const formData = {
+                painting: document.getElementById('paintingSelect').value,
+                size: document.getElementById('printSize').options[document.getElementById('printSize').selectedIndex].text,
+                name: document.getElementById('customerName').value,
+                email: document.getElementById('customerEmail').value,
+                address: document.getElementById('shippingAddress').value,
+                notes: document.getElementById('notes').value
+            };
+            const subject = encodeURIComponent('Print Order: ' + formData.painting);
+            const body = encodeURIComponent(
+                'Order Request\n\nArtwork: ' + formData.painting +
+                '\nSize: ' + formData.size +
+                '\n\nCustomer Information:\nName: ' + formData.name +
+                '\nEmail: ' + formData.email +
+                '\n\nShipping Address:\n' + formData.address +
+                '\n\nAdditional Notes:\n' + (formData.notes || 'None') +
+                '\n\n---\nPlease respond with payment instructions and estimated shipping time.'
+            );
+            window.location.href = 'mailto:contact@stephensironi.com?subject=' + subject + '&body=' + body;
+            alert('Your order request has been prepared! Your email client will open to send the order.');
+        }
+
+        // Smooth page transitions
+        document.querySelectorAll('a[href$=".html"]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const href = this.getAttribute('href');
+                document.body.classList.add('fade-out');
+                setTimeout(() => {
+                    window.location.href = href;
+                }, 500);
+            });
+        });
+    </script>
+</body>
+</html>
