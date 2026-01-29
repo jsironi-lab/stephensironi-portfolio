@@ -115,23 +115,24 @@
             color: rgba(255, 255, 255, 0.85);
         }
 
-        /* Top right navigation */
+        /* Top right navigation (hamburger only) */
         nav {
+            position: fixed;
+            top: 0;
+            right: 0;
+            z-index: 200;
+            padding: 2.2rem 3rem;
+        }
+
+        .nav-links {
             position: fixed;
             top: 0;
             right: 0;
             z-index: 100;
             display: flex;
-            flex-direction: row;
-            align-items: center;
             gap: 2.5rem;
             padding: 2.2rem 3rem;
             animation: fadeIn 1s ease-out 0.7s both;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2.5rem;
         }
 
         nav a {
@@ -240,11 +241,12 @@
         @media (max-width: 1024px) {
             .hamburger {
                 display: block;
-                z-index: 200;
             }
 
             .nav-links {
                 display: none;
+                animation: none;
+                padding: 0;
             }
 
             .nav-links.open {
@@ -336,14 +338,14 @@
             <span></span>
             <span></span>
         </button>
-        <div class="nav-links" id="navLinks">
-            <a href="boston.html">Boston, MA</a>
-            <a href="delaware.html">Delaware, OH</a>
-            <a href="misc.html">Other Works</a>
-            <a href="about.html">About</a>
-            <a href="contact.html">Contact</a>
-        </div>
     </nav>
+    <div class="nav-links" id="navLinks">
+        <a href="boston.html">Boston, MA</a>
+        <a href="delaware.html">Delaware, OH</a>
+        <a href="misc.html">Other Works</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+    </div>
 
     <!-- Bottom left location label (changes with rotation) -->
     <div class="location-label">
