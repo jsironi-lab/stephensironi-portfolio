@@ -115,27 +115,26 @@
             color: rgba(255, 255, 255, 0.85);
         }
 
-        /* Top right navigation (hamburger only) */
+        /* Top right navigation */
         nav {
-            position: fixed;
-            top: 0;
-            right: 0;
-            z-index: 200;
-            padding: 2.2rem 3rem;
-        }
-
-        .nav-links {
             position: fixed;
             top: 0;
             right: 0;
             z-index: 100;
             display: flex;
+            flex-direction: row;
+            align-items: center;
             gap: 2.5rem;
             padding: 2.2rem 3rem;
             animation: fadeIn 1s ease-out 0.7s both;
         }
 
-        nav a {
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        nav a, .mobile-menu a {
             font-family: 'Work Sans', sans-serif;
             font-size: 0.98rem;
             font-weight: 300;
@@ -174,7 +173,7 @@
             background: none;
             border: none;
             padding: 0;
-            z-index: 200;
+            z-index: 2000;
         }
 
         .hamburger span {
@@ -196,6 +195,40 @@
 
         .hamburger.active span:nth-child(3) {
             transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* Slide-out mobile menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1500;
+            display: flex;
+            flex-direction: column;
+            padding: 6rem 3rem;
+            gap: 1.8rem;
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+            visibility: hidden;
+        }
+
+        .mobile-menu.open {
+            transform: translateX(0);
+            visibility: visible;
+        }
+
+        .mobile-menu a {
+            font-size: 1.3rem;
+            letter-spacing: 2px;
+            text-shadow: none;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .mobile-menu a::after {
+            display: none;
         }
 
         /* Bottom left location label (clickable) */
@@ -244,34 +277,6 @@
             }
 
             .nav-links {
-                display: none;
-                animation: none;
-                padding: 0;
-            }
-
-            .nav-links.open {
-                display: flex;
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: rgba(0, 0, 0, 0.95);
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                gap: 2.5rem;
-                z-index: 150;
-            }
-
-            .nav-links.open a {
-                font-size: 1.1rem;
-                letter-spacing: 2px;
-                text-shadow: none;
-                color: rgba(255, 255, 255, 0.9);
-            }
-
-            .nav-links.open a::after {
                 display: none;
             }
         }
@@ -338,8 +343,17 @@
             <span></span>
             <span></span>
         </button>
+        <div class="nav-links">
+            <a href="boston.html">Boston, MA</a>
+            <a href="delaware.html">Delaware, OH</a>
+            <a href="misc.html">Other Works</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+        </div>
     </nav>
-    <div class="nav-links" id="navLinks">
+
+    <!-- Mobile slide-out menu -->
+    <div class="mobile-menu" id="mobileMenu">
         <a href="boston.html">Boston, MA</a>
         <a href="delaware.html">Delaware, OH</a>
         <a href="misc.html">Other Works</a>
@@ -356,7 +370,7 @@
         // Hamburger menu toggle
         function toggleMenu() {
             document.getElementById('hamburger').classList.toggle('active');
-            document.getElementById('navLinks').classList.toggle('open');
+            document.getElementById('mobileMenu').classList.toggle('open');
         }
 
         // Painting rotation with synchronized location label
