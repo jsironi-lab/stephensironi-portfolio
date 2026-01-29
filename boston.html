@@ -179,6 +179,62 @@
             margin-top: 0.2rem;
         }
 
+        /* Navigation arrows */
+        .gallery-arrow {
+            position: fixed;
+            top: 80px;
+            bottom: 0;
+            width: 80px;
+            z-index: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery-arrow:hover {
+            opacity: 1;
+        }
+
+        .gallery-arrow span {
+            font-size: 2rem;
+            font-weight: 200;
+            color: rgba(0, 0, 0, 0.4);
+            transition: color 0.3s ease;
+            user-select: none;
+        }
+
+        .gallery-arrow:hover span {
+            color: rgba(0, 0, 0, 0.8);
+        }
+
+        .gallery-arrow.left {
+            left: 0;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0.6), transparent);
+        }
+
+        .gallery-arrow.right {
+            right: 0;
+            background: linear-gradient(to left, rgba(255, 255, 255, 0.6), transparent);
+        }
+
+        .gallery-arrow.hidden {
+            pointer-events: none;
+            opacity: 0 !important;
+        }
+
+        @media (max-width: 768px) {
+            .gallery-arrow {
+                width: 50px;
+            }
+
+            .gallery-arrow span {
+                font-size: 1.5rem;
+            }
+        }
+
         /* Lightbox */
         .lightbox {
             display: none;
@@ -355,6 +411,10 @@
     <!-- Page title (vertical) -->
     <div class="page-title">Boston, MA</div>
 
+    <!-- Navigation arrows -->
+    <div class="gallery-arrow left hidden" id="arrowLeft" onclick="scrollPrev()"><span>←</span></div>
+    <div class="gallery-arrow right" id="arrowRight" onclick="scrollNext()"><span>→</span></div>
+
     <!-- Horizontal scrolling gallery -->
     <div class="gallery-container">
         <div class="gallery-scroll" id="gallery">
@@ -451,6 +511,46 @@
                 }, 500);
             });
         });
+
+        // Arrow navigation
+        const container = document.querySelector('.gallery-container');
+        const arrowLeft = document.getElementById('arrowLeft');
+        const arrowRight = document.getElementById('arrowRight');
+
+        function updateArrows() {
+            const atStart = container.scrollLeft <= 10;
+            const atEnd = container.scrollLeft >= container.scrollWidth - container.clientWidth - 10;
+            arrowLeft.classList.toggle('hidden', atStart);
+            arrowRight.classList.toggle('hidden', atEnd);
+        }
+
+        function scrollNext() {
+            const items = document.querySelectorAll('.painting-item');
+            const containerLeft = container.scrollLeft;
+            for (const item of items) {
+                const itemLeft = item.offsetLeft - container.offsetLeft;
+                if (itemLeft > containerLeft + 20) {
+                    container.scrollTo({ left: itemLeft - 96, behavior: 'smooth' });
+                    break;
+                }
+            }
+        }
+
+        function scrollPrev() {
+            const items = Array.from(document.querySelectorAll('.painting-item'));
+            const containerLeft = container.scrollLeft;
+            for (let i = items.length - 1; i >= 0; i--) {
+                const itemLeft = items[i].offsetLeft - container.offsetLeft;
+                if (itemLeft < containerLeft - 20) {
+                    container.scrollTo({ left: itemLeft - 96, behavior: 'smooth' });
+                    break;
+                }
+            }
+        }
+
+        container.addEventListener('scroll', updateArrows);
+        window.addEventListener('resize', updateArrows);
+        updateArrows();
 
         console.log('Boston gallery loaded:', paintings.length, 'paintings');
     </script>
