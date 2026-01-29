@@ -245,6 +245,10 @@
 
             .nav-links {
                 display: none;
+            }
+
+            .nav-links.open {
+                display: flex;
                 position: fixed;
                 top: 0;
                 left: 0;
@@ -258,15 +262,15 @@
                 z-index: 150;
             }
 
-            .nav-links.open {
-                display: flex;
-            }
-
-            .nav-links a {
+            .nav-links.open a {
                 font-size: 1.1rem;
                 letter-spacing: 2px;
                 text-shadow: none;
                 color: rgba(255, 255, 255, 0.9);
+            }
+
+            .nav-links.open a::after {
+                display: none;
             }
         }
 

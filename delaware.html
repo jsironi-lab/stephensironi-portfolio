@@ -375,6 +375,10 @@
 
             .nav-right {
                 display: none;
+            }
+
+            .nav-right.open {
+                display: flex;
                 position: fixed;
                 top: 0;
                 left: 0;
@@ -389,13 +393,15 @@
                 z-index: 1500;
             }
 
-            .nav-right.open {
-                display: flex;
-            }
-
-            .nav-right a {
+            .nav-right.open a {
                 font-size: 1.1rem;
                 color: #000;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+            }
+
+            .nav-right.open a::after {
+                display: none;
             }
         }
 
