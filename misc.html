@@ -113,22 +113,6 @@
             transform: rotate(-45deg) translate(5px, -5px);
         }
 
-        /* Page title */
-        .page-title {
-            position: fixed;
-            top: 50%;
-            left: 3rem;
-            transform: translateY(-50%) rotate(-90deg);
-            transform-origin: left center;
-            z-index: 100;
-            font-family: 'Crimson Pro', serif;
-            font-size: 2rem;
-            font-weight: 200;
-            letter-spacing: 3px;
-            color: rgba(0, 0, 0, 0.15);
-            pointer-events: none;
-        }
-
         /* Horizontal scroll container */
         .gallery-container {
             position: fixed;
@@ -416,10 +400,6 @@
                 padding: 1.5rem;
             }
 
-            .page-title {
-                display: none;
-            }
-
             .gallery-container {
                 padding-top: 80px;
             }
@@ -441,7 +421,7 @@
 
             .lightbox-image {
                 max-width: 90vw;
-                max-height: 50vh;
+                max-height: 40vh;
             }
 
             .lightbox-info {
@@ -489,9 +469,6 @@
         <a href="about.html">About</a>
         <a href="contact.html">Contact</a>
     </div>
-
-    <!-- Page title (vertical) -->
-    <div class="page-title">Other Works</div>
 
     <!-- Navigation arrows -->
     <div class="gallery-arrow left" id="arrowLeft"><span>←</span></div>
