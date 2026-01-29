@@ -38,7 +38,7 @@
 
         .nav-left a {
             font-family: 'Crimson Pro', serif;
-            font-size: 1.43rem;
+            font-size: 1.64rem;
             font-weight: 300;
             color: #000;
             text-decoration: none;
@@ -52,7 +52,7 @@
 
         .nav-right a {
             font-family: 'Work Sans', sans-serif;
-            font-size: 0.8rem;
+            font-size: 0.92rem;
             font-weight: 300;
             letter-spacing: 1.5px;
             text-transform: uppercase;
@@ -81,6 +81,36 @@
         .nav-right a.active::after,
         .nav-right a:hover::after {
             width: 100%;
+        }
+
+        /* Hamburger menu */
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: #000;
+            margin: 5px 0;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
         }
 
         /* Page title */
@@ -199,29 +229,32 @@
         }
 
         .gallery-arrow span {
-            font-size: 2rem;
-            font-weight: 200;
-            color: rgba(0, 0, 0, 0.4);
-            transition: color 0.3s ease;
+            font-size: 1.4rem;
+            font-weight: 300;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.6);
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease;
             user-select: none;
         }
 
         .gallery-arrow:hover span {
-            color: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.85);
         }
 
         .gallery-arrow.left {
             left: 0;
-            background: linear-gradient(to right, rgba(255, 255, 255, 0.6), transparent);
         }
 
         .gallery-arrow.right {
             right: 0;
-            background: linear-gradient(to left, rgba(255, 255, 255, 0.6), transparent);
         }
 
         .gallery-arrow.hidden {
-            pointer-events: none;
             opacity: 0 !important;
         }
 
@@ -334,18 +367,43 @@
             color: #000;
         }
 
+        /* Collapse nav to hamburger */
+        @media (max-width: 1024px) {
+            .hamburger {
+                display: block;
+                z-index: 2000;
+            }
+
+            .nav-right {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 2.5rem;
+                z-index: 1500;
+            }
+
+            .nav-right.open {
+                display: flex;
+            }
+
+            .nav-right a {
+                font-size: 1.1rem;
+                color: #000;
+            }
+        }
+
         /* Mobile responsive */
         @media (max-width: 768px) {
             nav {
                 padding: 1.5rem;
-                flex-direction: column;
-                gap: 1rem;
-                align-items: flex-start;
-            }
-
-            .nav-right {
-                gap: 1.5rem;
-                flex-wrap: wrap;
             }
 
             .page-title {
@@ -353,7 +411,7 @@
             }
 
             .gallery-container {
-                padding-top: 120px;
+                padding-top: 80px;
             }
 
             .gallery-scroll {
@@ -399,7 +457,12 @@
         <div class="nav-left">
             <a href="index.html">Stephen Sironi</a>
         </div>
-        <div class="nav-right">
+        <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="nav-right" id="navRight">
             <a href="boston.html" class="active">Boston, MA</a>
             <a href="delaware.html">Delaware, OH</a>
             <a href="misc.html">Other Works</a>
@@ -412,8 +475,8 @@
     <div class="page-title">Boston, MA</div>
 
     <!-- Navigation arrows -->
-    <div class="gallery-arrow left hidden" id="arrowLeft" onclick="scrollPrev()"><span>←</span></div>
-    <div class="gallery-arrow right" id="arrowRight" onclick="scrollNext()"><span>→</span></div>
+    <div class="gallery-arrow left" id="arrowLeft"><span>←</span></div>
+    <div class="gallery-arrow right" id="arrowRight"><span>→</span></div>
 
     <!-- Horizontal scrolling gallery -->
     <div class="gallery-container">
@@ -512,45 +575,68 @@
             });
         });
 
-        // Arrow navigation
+        // Circular arrow navigation using current painting index
         const container = document.querySelector('.gallery-container');
         const arrowLeft = document.getElementById('arrowLeft');
         const arrowRight = document.getElementById('arrowRight');
+        let currentIndex = 0;
+        const totalPaintings = paintings.length;
 
-        function updateArrows() {
-            const atStart = container.scrollLeft <= 10;
-            const atEnd = container.scrollLeft >= container.scrollWidth - container.clientWidth - 10;
-            arrowLeft.classList.toggle('hidden', atStart);
-            arrowRight.classList.toggle('hidden', atEnd);
-        }
-
-        function scrollNext() {
+        function scrollToItem(index) {
             const items = document.querySelectorAll('.painting-item');
-            const containerLeft = container.scrollLeft;
-            for (const item of items) {
-                const itemLeft = item.offsetLeft - container.offsetLeft;
-                if (itemLeft > containerLeft + 20) {
-                    container.scrollTo({ left: itemLeft - 96, behavior: 'smooth' });
-                    break;
-                }
-            }
+            if (!items[index]) return;
+            const item = items[index];
+            const targetLeft = item.offsetLeft - 96;
+            container.scrollTo({ left: Math.max(0, targetLeft), behavior: 'smooth' });
+            currentIndex = index;
         }
 
-        function scrollPrev() {
-            const items = Array.from(document.querySelectorAll('.painting-item'));
-            const containerLeft = container.scrollLeft;
-            for (let i = items.length - 1; i >= 0; i--) {
-                const itemLeft = items[i].offsetLeft - container.offsetLeft;
-                if (itemLeft < containerLeft - 20) {
-                    container.scrollTo({ left: itemLeft - 96, behavior: 'smooth' });
-                    break;
-                }
+        arrowRight.addEventListener('click', function(e) {
+            e.stopPropagation();
+            currentIndex = (currentIndex + 1) % totalPaintings;
+            const items = document.querySelectorAll('.painting-item');
+            const item = items[currentIndex];
+            const targetLeft = item.offsetLeft - 96;
+            // If wrapping to first, jump instantly then no animation needed
+            if (currentIndex === 0) {
+                container.scrollTo({ left: 0, behavior: 'auto' });
+            } else {
+                container.scrollTo({ left: Math.max(0, targetLeft), behavior: 'smooth' });
             }
-        }
+        });
 
-        container.addEventListener('scroll', updateArrows);
-        window.addEventListener('resize', updateArrows);
-        updateArrows();
+        arrowLeft.addEventListener('click', function(e) {
+            e.stopPropagation();
+            currentIndex = (currentIndex - 1 + totalPaintings) % totalPaintings;
+            const items = document.querySelectorAll('.painting-item');
+            const item = items[currentIndex];
+            const targetLeft = item.offsetLeft - 96;
+            // If wrapping to last, jump instantly
+            if (currentIndex === totalPaintings - 1) {
+                container.scrollTo({ left: container.scrollWidth, behavior: 'auto' });
+            } else {
+                container.scrollTo({ left: Math.max(0, targetLeft), behavior: 'smooth' });
+            }
+        });
+
+        // Keep currentIndex synced when user scrolls manually
+        container.addEventListener('scrollend', function() {
+            const items = document.querySelectorAll('.painting-item');
+            const center = container.scrollLeft + container.clientWidth / 2;
+            let closest = 0;
+            let closestDist = Infinity;
+            items.forEach((item, i) => {
+                const dist = Math.abs((item.offsetLeft + item.offsetWidth / 2) - center);
+                if (dist < closestDist) { closestDist = dist; closest = i; }
+            });
+            currentIndex = closest;
+        });
+
+        // Hamburger menu toggle
+        function toggleMenu() {
+            document.getElementById('hamburger').classList.toggle('active');
+            document.getElementById('navRight').classList.toggle('open');
+        }
 
         console.log('Boston gallery loaded:', paintings.length, 'paintings');
     </script>

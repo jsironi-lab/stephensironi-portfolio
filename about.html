@@ -36,7 +36,7 @@
 
         .nav-left a {
             font-family: 'Crimson Pro', serif;
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             font-weight: 300;
             color: #000;
             text-decoration: none;
@@ -50,7 +50,7 @@
 
         .nav-right a {
             font-family: 'Work Sans', sans-serif;
-            font-size: 0.8rem;
+            font-size: 0.92rem;
             font-weight: 300;
             letter-spacing: 1.5px;
             text-transform: uppercase;
@@ -79,6 +79,36 @@
         .nav-right a.active::after,
         .nav-right a:hover::after {
             width: 100%;
+        }
+
+        /* Hamburger menu */
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: #000;
+            margin: 5px 0;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
         }
 
         /* About layout */
@@ -140,18 +170,41 @@
             color: #fff;
         }
 
-        /* Mobile responsive */
-        @media (max-width: 768px) {
-            nav {
-                padding: 1.5rem;
-                flex-direction: column;
-                gap: 1rem;
-                align-items: flex-start;
+        @media (max-width: 1024px) {
+            .hamburger {
+                display: block;
+                z-index: 2000;
             }
 
             .nav-right {
-                gap: 1.5rem;
-                flex-wrap: wrap;
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 2.5rem;
+                z-index: 1500;
+            }
+
+            .nav-right.open {
+                display: flex;
+            }
+
+            .nav-right a {
+                font-size: 1.1rem;
+                color: #000;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1.5rem;
             }
 
             .about {
@@ -186,7 +239,12 @@
         <div class="nav-left">
             <a href="index.html">Stephen Sironi</a>
         </div>
-        <div class="nav-right">
+        <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="nav-right" id="navRight">
             <a href="boston.html">Boston, MA</a>
             <a href="delaware.html">Delaware, OH</a>
             <a href="misc.html">Other Works</a>
@@ -207,6 +265,12 @@
     </section>
 
     <script>
+        // Hamburger menu toggle
+        function toggleMenu() {
+            document.getElementById('hamburger').classList.toggle('active');
+            document.getElementById('navRight').classList.toggle('open');
+        }
+
         // Smooth page transitions
         document.querySelectorAll('a[href$=".html"]').forEach(link => {
             link.addEventListener('click', function(e) {
