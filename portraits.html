@@ -46,6 +46,7 @@
         .lightbox-info { max-width: 400px; }
         .lightbox-info h2 { font-family: 'Crimson Pro', serif; font-size: 2.5rem; font-weight: 300; margin-bottom: 1rem; line-height: 1.2; }
         .lightbox-info .medium { font-family: 'Work Sans', sans-serif; font-size: 0.85rem; font-weight: 300; color: rgba(0, 0, 0, 0.6); margin-bottom: 0.5rem; letter-spacing: 1px; }
+        .lightbox-info .size { font-family: 'Work Sans', sans-serif; font-size: 0.85rem; font-weight: 300; color: rgba(0, 0, 0, 0.6); margin-bottom: 0.5rem; letter-spacing: 1px; }
         .lightbox-info .location { font-family: 'Work Sans', sans-serif; font-size: 0.85rem; font-weight: 300; color: rgba(0, 0, 0, 0.45); margin-bottom: 1.5rem; letter-spacing: 0.5px; font-style: italic; }
         .lightbox-info .description { font-family: 'Work Sans', sans-serif; font-size: 0.9rem; font-weight: 300; color: rgba(0, 0, 0, 0.55); line-height: 1.7; margin-bottom: 2rem; }
         .lightbox-info .price { font-family: 'Work Sans', sans-serif; font-size: 1.5rem; font-weight: 300; margin-bottom: 2.5rem; color: #000; }
@@ -112,6 +113,7 @@
             <div class="lightbox-info">
                 <h2 id="lightboxTitle"></h2>
                 <div class="medium" id="lightboxMedium"></div>
+                <div class="size" id="lightboxSize"></div>
                 <div class="location" id="lightboxLocation"></div>
                 <div class="description" id="lightboxDescription"></div>
                 <div class="price" id="lightboxPrice"></div>
@@ -122,16 +124,16 @@
     </div>
     <script>
         const paintings = [
-            {title: "Suzette No 1", folder: "portraits", filename: "suzette-no-1.jpg", medium: "Acrylic on Canvas", location: "Location n/a", price: "300", description: "A woman sits at a bar holding a drink, with the bar interior behind her.", availability: "yes"},
-            {title: "Man in Pink Shirt", folder: "portraits", filename: "man-in-pink-shirt.jpg", medium: "Acrylic on Canvas", location: "Location n/a", price: "300", description: "A man in a pink shirt stands in front of a yellow background, holding an object.", availability: "yes"},
-            {title: "Doughnuts", folder: "portraits", filename: "doughnuts.jpg", medium: "Acrylic on Canvas", location: "Portland, ME", price: "300", description: "Assorted doughnuts are stacked in rows, their glazes and fillings rendered with broad, textured brush strokes.", availability: "yes"},
-            {title: "Linda", folder: "portraits", filename: "linda.jpg", medium: "Acrylic on Canvas", location: "Location n/a", price: "300", description: "A woman reads a newspaper while reclining in a striped armchair, her feet propped on a footstool in a softly lit interior.", availability: "yes"},
-            {title: "Skier in Gondola", folder: "portraits", filename: "skier-in-gondola.jpg", medium: "Acrylic on Canvas", location: "Mammoth Lakes, CA", price: "300", description: "A skier in winter gear sits inside a gondola, with snow-covered mountains visible through the windows.", availability: "yes"},
-            {title: "Man in Beige", folder: "portraits", filename: "man-in-beige.jpg", medium: "Acrylic on Canvas", location: "Location n/a", price: "300", description: "A man in a light shirt and beige pants walks along a sidewalk holding a paper shopping bag, with storefront windows in the background.", availability: "yes"},
-            {title: "Kayaks", folder: "portraits", filename: "kayaks.jpg", medium: "Acrylic on Canvas", location: "Damariscotta, ME", price: "300", description: "Boats rest along the shoreline at night as moonlight reflects across calm water, with trees visible along the lake's edge.", availability: "yes"},
-            {title: "Young Man at the Ready", folder: "portraits", filename: "young-man-at-the-ready.jpg", medium: "Acrylic on Canvas", location: "Hanover, MA", price: "300", description: "A man in a safety vest stands beside a green cart on a paved area, with buildings visible behind him.", availability: "no"},
-            {title: "Suzette No 2", folder: "portraits", filename: "suzette-no-2.jpg", medium: "Acrylic on Canvas", location: "Location n/a", price: "300", description: "A seated woman smiles softly, set against a dark background.", availability: "no"},
-            {title: "Self Portrait", folder: "portraits", filename: "self-portrait.jpg", medium: "Acrylic on Canvas", location: "Location n/a", price: "300", description: "A self-portrait of the artist.", availability: "no"}
+            {title: "Suzette No 1", folder: "portraits", filename: "suzette-no-1.jpg", medium: "Acrylic on Canvas", size: "n/a", location: "Location n/a", price: "300", description: "A woman sits at a bar holding a drink, with the bar interior behind her.", availability: "yes"},
+            {title: "Man in Pink Shirt", folder: "portraits", filename: "man-in-pink-shirt.jpg", medium: "Acrylic on Canvas", size: "n/a", location: "Location n/a", price: "300", description: "A man in a pink shirt stands in front of a yellow background, holding an object.", availability: "yes"},
+            {title: "Doughnuts", folder: "portraits", filename: "doughnuts.jpg", medium: "Acrylic on Canvas", size: "n/a", location: "Portland, ME", price: "300", description: "Assorted doughnuts are stacked in rows, their glazes and fillings rendered with broad, textured brush strokes.", availability: "yes"},
+            {title: "Linda", folder: "portraits", filename: "linda.jpg", medium: "Acrylic on Canvas", size: "n/a", location: "Location n/a", price: "300", description: "A woman reads a newspaper while reclining in a striped armchair, her feet propped on a footstool in a softly lit interior.", availability: "yes"},
+            {title: "Skier in Gondola", folder: "portraits", filename: "skier-in-gondola.jpg", medium: "Acrylic on Canvas", size: "n/a", location: "Mammoth Lakes, CA", price: "300", description: "A skier in winter gear sits inside a gondola, with snow-covered mountains visible through the windows.", availability: "yes"},
+            {title: "Man in Beige", folder: "portraits", filename: "man-in-beige.jpg", medium: "Acrylic on Canvas", size: "n/a", location: "Location n/a", price: "300", description: "A man in a light shirt and beige pants walks along a sidewalk holding a paper shopping bag, with storefront windows in the background.", availability: "yes"},
+            {title: "Kayaks", folder: "portraits", filename: "kayaks.jpg", medium: "Acrylic on Canvas", size: "n/a", location: "Damariscotta, ME", price: "300", description: "Boats rest along the shoreline at night as moonlight reflects across calm water, with trees visible along the lake's edge.", availability: "yes"},
+            {title: "Young Man at the Ready", folder: "portraits", filename: "young-man-at-the-ready.jpg", medium: "Acrylic on Canvas", size: "n/a", location: "Hanover, MA", price: "300", description: "A man in a safety vest stands beside a green cart on a paved area, with buildings visible behind him.", availability: "no"},
+            {title: "Suzette No 2", folder: "portraits", filename: "suzette-no-2.jpg", medium: "Acrylic on Canvas", size: "n/a", location: "Location n/a", price: "300", description: "A seated woman smiles softly, set against a dark background.", availability: "no"},
+            {title: "Self Portrait", folder: "portraits", filename: "self-portrait.jpg", medium: "Acrylic on Canvas", size: "n/a", location: "Location n/a", price: "300", description: "A self-portrait of the artist.", availability: "no"}
         ];
 
         const gallery = document.getElementById('gallery');
@@ -149,6 +151,13 @@
             document.getElementById('lightboxImage').alt = painting.title;
             document.getElementById('lightboxTitle').textContent = painting.title;
             document.getElementById('lightboxMedium').textContent = painting.medium;
+            const sizeEl = document.getElementById('lightboxSize');
+            if (painting.size && painting.size !== 'n/a') {
+                sizeEl.textContent = painting.size;
+                sizeEl.style.display = '';
+            } else {
+                sizeEl.style.display = 'none';
+            }
             document.getElementById('lightboxLocation').textContent = painting.location;
             document.getElementById('lightboxDescription').textContent = painting.description;
             document.getElementById('lightboxPrice').textContent = `From $${painting.price}`;

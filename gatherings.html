@@ -46,6 +46,7 @@
         .lightbox-info { max-width: 400px; }
         .lightbox-info h2 { font-family: 'Crimson Pro', serif; font-size: 2.5rem; font-weight: 300; margin-bottom: 1rem; line-height: 1.2; }
         .lightbox-info .medium { font-family: 'Work Sans', sans-serif; font-size: 0.85rem; font-weight: 300; color: rgba(0, 0, 0, 0.6); margin-bottom: 0.5rem; letter-spacing: 1px; }
+        .lightbox-info .size { font-family: 'Work Sans', sans-serif; font-size: 0.85rem; font-weight: 300; color: rgba(0, 0, 0, 0.6); margin-bottom: 0.5rem; letter-spacing: 1px; }
         .lightbox-info .location { font-family: 'Work Sans', sans-serif; font-size: 0.85rem; font-weight: 300; color: rgba(0, 0, 0, 0.45); margin-bottom: 1.5rem; letter-spacing: 0.5px; font-style: italic; }
         .lightbox-info .description { font-family: 'Work Sans', sans-serif; font-size: 0.9rem; font-weight: 300; color: rgba(0, 0, 0, 0.55); line-height: 1.7; margin-bottom: 2rem; }
         .lightbox-info .price { font-family: 'Work Sans', sans-serif; font-size: 1.5rem; font-weight: 300; margin-bottom: 2.5rem; color: #000; }
@@ -112,6 +113,7 @@
             <div class="lightbox-info">
                 <h2 id="lightboxTitle"></h2>
                 <div class="medium" id="lightboxMedium"></div>
+                <div class="size" id="lightboxSize"></div>
                 <div class="location" id="lightboxLocation"></div>
                 <div class="description" id="lightboxDescription"></div>
                 <div class="price" id="lightboxPrice"></div>
@@ -122,12 +124,12 @@
     </div>
     <script>
         const paintings = [
-            {title: "Watching the Eclipse", folder: "gatherings", filename: "watching-the-eclipse.jpg", medium: "Acrylic on Canvas", location: "Delaware, OH", price: "300", description: "A seated crowd wearing eclipse glasses looks upward during a solar eclipse, with chairs and parked cars visible behind them.", availability: "no"},
-            {title: "Dancing in the Street", folder: "gatherings", filename: "dancing-in-the-street-provincetown.jpg", medium: "Acrylic on Canvas", location: "Provincetown, MA", price: "300", description: "People in traditional costumes dance in the street in Provincetown, Massachusetts, as onlookers stand along the sidewalk.", availability: "yes"},
-            {title: "Moshing", folder: "gatherings", filename: "moshing.jpg", medium: "Acrylic on Canvas", location: "Location n/a", price: "300", description: "Figures with raised arms cluster together as one person is lifted above the group, creating a layered scene of movement and contact.", availability: "no"},
-            {title: "Only Have Eyes for You", folder: "gatherings", filename: "only-have-eyes-for-you.jpg", medium: "Acrylic on Canvas", location: "Waterford, VA", price: "300", description: "Newlyweds dance closely in the foreground while groups of people mingle in a warmly lit space behind them.", availability: "yes"},
-            {title: "Pipers on Parade", folder: "gatherings", filename: "pipers-on-parade.jpg", medium: "Acrylic on Canvas", location: "Plymouth, MA", price: "300", description: "Bagpipers in uniform march past a gathered crowd, performing along a city sidewalk.", availability: "yes"},
-            {title: "Some People Like to Dance", folder: "gatherings", filename: "some-people-like-to-dance.jpg", medium: "Mixed-media Collage", location: "Location n/a", price: "300", description: "Overlapping cut-out figures of dancers and musicians fill the frame, layered over a crowded outdoor gathering.", availability: "no"}
+            {title: "Watching the Eclipse", folder: "gatherings", filename: "watching-the-eclipse.jpg", medium: "Acrylic on Canvas", size: "n/a", location: "Delaware, OH", price: "300", description: "A seated crowd wearing eclipse glasses looks upward during a solar eclipse, with chairs and parked cars visible behind them.", availability: "no"},
+            {title: "Dancing in the Street", folder: "gatherings", filename: "dancing-in-the-street.jpg", medium: "Acrylic on Canvas", size: "n/a", location: "Provincetown, MA", price: "300", description: "People in traditional costumes dance in the street in Provincetown, Massachusetts, as onlookers stand along the sidewalk.", availability: "yes"},
+            {title: "Moshing", folder: "gatherings", filename: "moshing.jpg", medium: "Acrylic on Canvas", size: "n/a", location: "Location n/a", price: "300", description: "Figures with raised arms cluster together as one person is lifted above the group, creating a layered scene of movement and contact.", availability: "no"},
+            {title: "Only Have Eyes for You", folder: "gatherings", filename: "only-have-eyes-for-you.jpg", medium: "Acrylic on Canvas", size: "n/a", location: "Waterford, VA", price: "300", description: "Newlyweds dance closely in the foreground while groups of people mingle in a warmly lit space behind them.", availability: "yes"},
+            {title: "Pipers on Parade", folder: "gatherings", filename: "pipers-on-parade.jpg", medium: "Acrylic on Canvas", size: "n/a", location: "Plymouth, MA", price: "300", description: "Bagpipers in uniform march past a gathered crowd, performing along a city sidewalk.", availability: "yes"},
+            {title: "Some People Like to Dance", folder: "gatherings", filename: "some-people-like-to-dance.jpg", medium: "Mixed-media Collage", size: "n/a", location: "Location n/a", price: "300", description: "Overlapping cut-out figures of dancers and musicians fill the frame, layered over a crowded outdoor gathering.", availability: "no"}
         ];
 
         const gallery = document.getElementById('gallery');
@@ -145,6 +147,13 @@
             document.getElementById('lightboxImage').alt = painting.title;
             document.getElementById('lightboxTitle').textContent = painting.title;
             document.getElementById('lightboxMedium').textContent = painting.medium;
+            const sizeEl = document.getElementById('lightboxSize');
+            if (painting.size && painting.size !== 'n/a') {
+                sizeEl.textContent = painting.size;
+                sizeEl.style.display = '';
+            } else {
+                sizeEl.style.display = 'none';
+            }
             document.getElementById('lightboxLocation').textContent = painting.location;
             document.getElementById('lightboxDescription').textContent = painting.description;
             document.getElementById('lightboxPrice').textContent = `From $${painting.price}`;
