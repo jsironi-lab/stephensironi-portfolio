@@ -435,21 +435,49 @@
         }
 
         @media (max-width: 768px) {
+            body {
+                overflow-x: hidden;
+                overflow-y: auto;
+            }
+
             nav {
                 padding: 1.5rem;
             }
 
             .gallery-container {
+                position: relative;
+                height: auto;
                 padding-top: 80px;
+                overflow-x: hidden;
+                overflow-y: auto;
             }
 
             .gallery-scroll {
-                padding: 0 1.5rem 60px 1.5rem;
-                gap: 20px;
+                flex-direction: column;
+                padding: 1rem 0 3rem 0;
+                gap: 2.5rem;
+                height: auto;
             }
 
             .painting-item {
-                height: calc((100vh - 200px) * 0.8);
+                flex-shrink: 0;
+                height: auto;
+                width: 100%;
+            }
+
+            .painting-item img {
+                width: 100%;
+                height: auto;
+                object-fit: cover;
+            }
+
+            .painting-caption {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
+
+            .gallery-arrow {
+                display: none;
             }
 
             .lightbox-content {
