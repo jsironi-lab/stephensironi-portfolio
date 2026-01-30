@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portraits &amp; Still Life | Stephen Sironi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@200;300;400&family=Work+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Work Sans', sans-serif; background: #fff; color: #000; overflow-x: hidden; overflow-y: hidden; }
+        nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); z-index: 1000; padding: 2rem 3rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0, 0, 0, 0.08); }
+        .nav-left a { font-family: 'Crimson Pro', serif; font-size: 1.64rem; font-weight: 300; color: #000; text-decoration: none; letter-spacing: 0.5px; }
+        .nav-right { display: flex; gap: 2.5rem; }
+        .nav-right a { font-family: 'Work Sans', sans-serif; font-size: 0.92rem; font-weight: 300; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(0, 0, 0, 0.6); text-decoration: none; transition: color 0.3s ease; position: relative; }
+        .nav-right a.active, .nav-right a:hover { color: #000; }
+        .nav-right a::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 1px; background: #000; transition: width 0.3s ease; }
+        .nav-right a.active::after, .nav-right a:hover::after { width: 100%; }
+        .hamburger { display: none; cursor: pointer; background: none; border: none; padding: 0; }
+        .hamburger span { display: block; width: 24px; height: 2px; background: #000; margin: 5px 0; transition: all 0.3s ease; }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+        .gallery-container { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; padding-top: 80px; overflow-x: auto; overflow-y: hidden; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
+        .gallery-container::-webkit-scrollbar { height: 8px; }
+        .gallery-container::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.05); }
+        .gallery-container::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.2); border-radius: 4px; }
+        .gallery-container::-webkit-scrollbar-thumb:hover { background: rgba(0, 0, 0, 0.3); }
+        .gallery-scroll { display: flex; gap: 60px; padding: 0 6rem 60px 6rem; height: 100%; align-items: center; }
+        .painting-item { flex-shrink: 0; height: calc((100vh - 200px) * 0.616); cursor: pointer; position: relative; transition: transform 0.4s ease, filter 0.4s ease; }
+        .painting-item:hover { transform: scale(1.02); filter: brightness(1.05); }
+        .painting-item img { height: calc(100% - 50px); width: auto; display: block; object-fit: contain; }
+        .painting-caption { padding-top: 0.8rem; }
+        .painting-caption .title { font-family: 'Crimson Pro', serif; font-size: 1.32rem; font-weight: 300; color: #000; line-height: 1.3; }
+        .painting-caption .medium { font-family: 'Work Sans', sans-serif; font-size: 0.9rem; font-weight: 300; color: rgba(0, 0, 0, 0.45); letter-spacing: 0.5px; margin-top: 0.2rem; }
+        .gallery-arrow { position: fixed; top: 80px; bottom: 0; width: 80px; z-index: 500; display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; transition: opacity 0.3s ease; }
+        .gallery-arrow:hover { opacity: 1; }
+        .gallery-arrow span { font-size: 1.4rem; font-weight: 300; color: #fff; background: rgba(0, 0, 0, 0.6); width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; transition: background 0.3s ease; user-select: none; }
+        .gallery-arrow:hover span { background: rgba(0, 0, 0, 0.85); }
+        .gallery-arrow.left { left: 0; }
+        .gallery-arrow.right { right: 0; }
+        .gallery-arrow.hidden { opacity: 0 !important; }
+        .lightbox { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(255, 255, 255, 0.98); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(20px); }
+        .lightbox.active { display: flex; }
+        .lightbox-content { display: flex; gap: 4rem; max-width: 90%; max-height: 85vh; align-items: center; }
+        .lightbox-image { max-width: 50vw; max-height: 65vh; object-fit: contain; }
+        .lightbox-info { max-width: 400px; }
+        .lightbox-info h2 { font-family: 'Crimson Pro', serif; font-size: 2.5rem; font-weight: 300; margin-bottom: 1rem; line-height: 1.2; }
+        .lightbox-info .medium { font-family: 'Work Sans', sans-serif; font-size: 0.85rem; font-weight: 300; color: rgba(0, 0, 0, 0.6); margin-bottom: 0.5rem; letter-spacing: 1px; }
+        .lightbox-info .location { font-family: 'Work Sans', sans-serif; font-size: 0.85rem; font-weight: 300; color: rgba(0, 0, 0, 0.45); margin-bottom: 1.5rem; letter-spacing: 0.5px; font-style: italic; }
+        .lightbox-info .description { font-family: 'Work Sans', sans-serif; font-size: 0.9rem; font-weight: 300; color: rgba(0, 0, 0, 0.55); line-height: 1.7; margin-bottom: 2rem; }
+        .lightbox-info .price { font-family: 'Work Sans', sans-serif; font-size: 1.5rem; font-weight: 300; margin-bottom: 2.5rem; color: #000; }
+        .unavailable-badge { display: inline-block; padding: 1rem 2.5rem; font-family: 'Work Sans', sans-serif; font-size: 0.85rem; font-weight: 400; letter-spacing: 2px; text-transform: uppercase; color: rgba(0, 0, 0, 0.35); border: 1px solid rgba(0, 0, 0, 0.15); }
+        .order-button { display: inline-block; padding: 1rem 2.5rem; background: #000; color: #fff; text-decoration: none; font-family: 'Work Sans', sans-serif; font-size: 0.85rem; font-weight: 400; letter-spacing: 2px; text-transform: uppercase; transition: all 0.3s ease; border: 1px solid #000; }
+        .order-button:hover { background: #fff; color: #000; }
+        .close-lightbox { position: absolute; top: 3rem; right: 3rem; font-size: 2.5rem; color: rgba(0, 0, 0, 0.6); cursor: pointer; background: none; border: none; transition: color 0.3s ease; font-weight: 200; }
+        .close-lightbox:hover { color: #000; }
+        .mobile-backdrop { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 1400; opacity: 0; visibility: hidden; transition: opacity 0.4s ease, visibility 0.4s ease; }
+        .mobile-backdrop.open { opacity: 1; visibility: visible; }
+        .mobile-menu { position: fixed; top: 0; right: 0; width: 80%; max-width: 360px; height: 100%; background: #fff; z-index: 1500; display: flex; flex-direction: column; padding: 6rem 3rem; gap: 1.8rem; transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1); visibility: hidden; }
+        .mobile-menu.open { transform: translateX(0); visibility: visible; }
+        .mobile-menu-close { position: absolute; top: 2rem; right: 2rem; background: none; border: none; color: rgba(0, 0, 0, 0.6); font-size: 1.8rem; font-weight: 200; cursor: pointer; padding: 0; line-height: 1; transition: color 0.3s ease; }
+        .mobile-menu-close:hover { color: #000; }
+        .mobile-menu a { font-family: 'Work Sans', sans-serif; font-size: 1.3rem; font-weight: 300; letter-spacing: 2px; text-transform: uppercase; color: #000; text-decoration: none; }
+        @media (max-width: 1024px) { .hamburger { display: block; z-index: 2000; } .nav-right { display: none; } }
+        @media (max-width: 768px) {
+            body { overflow-x: hidden; overflow-y: auto; }
+            nav { padding: 1.5rem; }
+            .gallery-container { position: relative; height: auto; padding-top: 80px; overflow-x: hidden; overflow-y: auto; }
+            .gallery-scroll { flex-direction: column; padding: 1rem 0 3rem 0; gap: 2.5rem; height: auto; }
+            .painting-item { flex-shrink: 0; height: auto; width: 100%; }
+            .painting-item img { width: 100%; height: auto; object-fit: cover; }
+            .painting-caption { padding-left: 1.5rem; padding-right: 1.5rem; }
+            .gallery-arrow { display: none; }
+            .lightbox-content { flex-direction: column; gap: 2rem; padding: 2rem; }
+            .lightbox-image { max-width: 90vw; max-height: 40vh; }
+            .lightbox-info { text-align: center; }
+            .close-lightbox { top: 1.5rem; right: 1.5rem; }
+        }
+        body.fade-out { opacity: 0; transition: opacity 0.5s ease; }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-left"><a href="index.html">Stephen Sironi</a></div>
+        <button class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+        <div class="nav-right" id="navRight">
+            <a href="everyday.html">Everyday Life</a>
+            <a href="gatherings.html">Gatherings</a>
+            <a href="portraits.html" class="active">Portraits &amp; Still Life</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </nav>
+    <div class="mobile-backdrop" id="mobileBackdrop" onclick="toggleMenu()"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="mobile-menu-close" onclick="toggleMenu()">&times;</button>
+        <a href="everyday.html">Everyday Life</a>
+        <a href="gatherings.html">Gatherings</a>
+        <a href="portraits.html">Portraits &amp; Still Life</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+    </div>
+    <div class="gallery-arrow left" id="arrowLeft"><span>&larr;</span></div>
+    <div class="gallery-arrow right" id="arrowRight"><span>&rarr;</span></div>
+    <div class="gallery-container">
+        <div class="gallery-scroll" id="gallery"></div>
+    </div>
+    <div class="lightbox" id="lightbox">
+        <button class="close-lightbox" onclick="closeLightbox()">&times;</button>
+        <div class="lightbox-content">
+            <img src="" alt="" class="lightbox-image" id="lightboxImage">
+            <div class="lightbox-info">
+                <h2 id="lightboxTitle"></h2>
+                <div class="medium" id="lightboxMedium"></div>
+                <div class="location" id="lightboxLocation"></div>
+                <div class="description" id="lightboxDescription"></div>
+                <div class="price" id="lightboxPrice"></div>
+                <a href="#" class="order-button" id="orderButton">Order Print</a>
+                <div class="unavailable-badge" id="unavailableBadge" style="display:none;">Temporarily Unavailable</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const paintings = [
+            {title: "Suzette No 1", folder: "misc", filename: "suzette-no-1.jpg", medium: "Acrylic on Canvas", location: "Location n/a", price: "300", description: "A woman sits at a bar holding a drink, with the bar interior behind her.", availability: "yes"},
+            {title: "Man in Pink Shirt", folder: "misc", filename: "man-in-pink-shirt.jpg", medium: "Acrylic on Canvas", location: "Location n/a", price: "300", description: "A man in a pink shirt stands in front of a yellow background, holding an object.", availability: "yes"},
+            {title: "Doughnuts", folder: "misc", filename: "doughnuts.jpg", medium: "Acrylic on Canvas", location: "Portland, ME", price: "300", description: "Assorted doughnuts are stacked in rows, their glazes and fillings rendered with broad, textured brush strokes.", availability: "yes"},
+            {title: "Linda", folder: "misc", filename: "linda.jpg", medium: "Acrylic on Canvas", location: "Location n/a", price: "300", description: "A woman reads a newspaper while reclining in a striped armchair, her feet propped on a footstool in a softly lit interior.", availability: "yes"},
+            {title: "Skier in Gondola", folder: "misc", filename: "skier-in-gondola.jpg", medium: "Acrylic on Canvas", location: "Mammoth Lakes, CA", price: "300", description: "A skier in winter gear sits inside a gondola, with snow-covered mountains visible through the windows.", availability: "yes"},
+            {title: "Man in Beige", folder: "misc", filename: "man-in-beige.jpg", medium: "Acrylic on Canvas", location: "Location n/a", price: "300", description: "A man in a light shirt and beige pants walks along a sidewalk holding a paper shopping bag, with storefront windows in the background.", availability: "yes"},
+            {title: "Kayaks", folder: "misc", filename: "kayaks.jpg", medium: "Acrylic on Canvas", location: "Damariscotta, ME", price: "300", description: "Boats rest along the shoreline at night as moonlight reflects across calm water, with trees visible along the lake's edge.", availability: "yes"},
+            {title: "Young Man at the Ready", folder: "misc", filename: "young-man-at-the-ready.jpg", medium: "Acrylic on Canvas", location: "Hanover, MA", price: "300", description: "A man in a safety vest stands beside a green cart on a paved area, with buildings visible behind him.", availability: "no"},
+            {title: "Suzette No 2", folder: "misc", filename: "suzette-no-2.jpg", medium: "Acrylic on Canvas", location: "Location n/a", price: "300", description: "A seated woman smiles softly, set against a dark background.", availability: "no"},
+            {title: "Self Portrait", folder: "misc", filename: "self-portrait.jpg", medium: "Acrylic on Canvas", location: "Location n/a", price: "300", description: "A self-portrait of the artist.", availability: "no"}
+        ];
+
+        const gallery = document.getElementById('gallery');
+        paintings.forEach((painting, index) => {
+            const item = document.createElement('div');
+            item.className = 'painting-item';
+            item.innerHTML = `<img src="images/paintings/${painting.folder}/${painting.filename}" alt="${painting.title}"><div class="painting-caption"><div class="title">${painting.title}</div><div class="medium">${painting.medium}</div></div>`;
+            item.onclick = () => openLightbox(index);
+            gallery.appendChild(item);
+        });
+
+        function openLightbox(index) {
+            const painting = paintings[index];
+            document.getElementById('lightboxImage').src = `images/paintings/${painting.folder}/${painting.filename}`;
+            document.getElementById('lightboxImage').alt = painting.title;
+            document.getElementById('lightboxTitle').textContent = painting.title;
+            document.getElementById('lightboxMedium').textContent = painting.medium;
+            document.getElementById('lightboxLocation').textContent = painting.location;
+            document.getElementById('lightboxDescription').textContent = painting.description;
+            document.getElementById('lightboxPrice').textContent = `From $${painting.price}`;
+            if (painting.availability === 'yes') {
+                document.getElementById('orderButton').href = `contact.html?painting=${encodeURIComponent(painting.title)}`;
+                document.getElementById('orderButton').style.display = 'inline-block';
+                document.getElementById('unavailableBadge').style.display = 'none';
+            } else {
+                document.getElementById('orderButton').style.display = 'none';
+                document.getElementById('unavailableBadge').style.display = 'inline-block';
+            }
+            document.getElementById('lightbox').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        document.getElementById('lightbox').addEventListener('click', function(e) { if (e.target === this) closeLightbox(); });
+        document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeLightbox(); });
+
+        document.querySelectorAll('a[href$=".html"]:not(.order-button)').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const href = this.getAttribute('href');
+                document.body.classList.add('fade-out');
+                setTimeout(() => { window.location.href = href; }, 500);
+            });
+        });
+
+        const container = document.querySelector('.gallery-container');
+        const arrowLeft = document.getElementById('arrowLeft');
+        const arrowRight = document.getElementById('arrowRight');
+        let currentIndex = 0;
+        const totalPaintings = paintings.length;
+
+        arrowRight.addEventListener('click', function(e) {
+            e.stopPropagation();
+            currentIndex = (currentIndex + 1) % totalPaintings;
+            const items = document.querySelectorAll('.painting-item');
+            const item = items[currentIndex];
+            const targetLeft = item.offsetLeft - 96;
+            if (currentIndex === 0) { container.scrollTo({ left: 0, behavior: 'auto' }); }
+            else { container.scrollTo({ left: Math.max(0, targetLeft), behavior: 'smooth' }); }
+        });
+
+        arrowLeft.addEventListener('click', function(e) {
+            e.stopPropagation();
+            currentIndex = (currentIndex - 1 + totalPaintings) % totalPaintings;
+            const items = document.querySelectorAll('.painting-item');
+            const item = items[currentIndex];
+            const targetLeft = item.offsetLeft - 96;
+            if (currentIndex === totalPaintings - 1) { container.scrollTo({ left: container.scrollWidth, behavior: 'auto' }); }
+            else { container.scrollTo({ left: Math.max(0, targetLeft), behavior: 'smooth' }); }
+        });
+
+        container.addEventListener('scrollend', function() {
+            const items = document.querySelectorAll('.painting-item');
+            const center = container.scrollLeft + container.clientWidth / 2;
+            let closest = 0, closestDist = Infinity;
+            items.forEach((item, i) => {
+                const dist = Math.abs((item.offsetLeft + item.offsetWidth / 2) - center);
+                if (dist < closestDist) { closestDist = dist; closest = i; }
+            });
+            currentIndex = closest;
+        });
+
+        function toggleMenu() {
+            document.getElementById('hamburger').classList.toggle('active');
+            document.getElementById('mobileMenu').classList.toggle('open');
+            document.getElementById('mobileBackdrop').classList.toggle('open');
+        }
+
+        console.log('Portraits & Still Life gallery loaded:', paintings.length, 'paintings');
+    </script>
+</body>
+</html>

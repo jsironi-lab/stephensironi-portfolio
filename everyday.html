@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Boston, MA | Stephen Sironi</title>
+    <title>Everyday Life | Stephen Sironi</title>
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@200;300;400&family=Work+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         * {
@@ -302,8 +302,18 @@
             font-size: 0.85rem;
             font-weight: 300;
             color: rgba(0, 0, 0, 0.6);
-            margin-bottom: 1.5rem;
+            margin-bottom: 0.5rem;
             letter-spacing: 1px;
+        }
+
+        .lightbox-info .location {
+            font-family: 'Work Sans', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 300;
+            color: rgba(0, 0, 0, 0.45);
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.5px;
+            font-style: italic;
         }
 
         .lightbox-info .description {
@@ -543,9 +553,9 @@
             <span></span>
         </button>
         <div class="nav-right" id="navRight">
-            <a href="boston.html" class="active">Boston, MA</a>
-            <a href="delaware.html">Delaware, OH</a>
-            <a href="misc.html">Other Works</a>
+            <a href="everyday.html" class="active">Everyday Life</a>
+            <a href="gatherings.html">Gatherings</a>
+            <a href="portraits.html">Portraits &amp; Still Life</a>
             <a href="about.html">About</a>
             <a href="contact.html">Contact</a>
         </div>
@@ -557,16 +567,16 @@
     <!-- Mobile slide-out menu -->
     <div class="mobile-menu" id="mobileMenu">
         <button class="mobile-menu-close" onclick="toggleMenu()">&times;</button>
-        <a href="boston.html">Boston, MA</a>
-        <a href="delaware.html">Delaware, OH</a>
-        <a href="misc.html">Other Works</a>
+        <a href="everyday.html">Everyday Life</a>
+        <a href="gatherings.html">Gatherings</a>
+        <a href="portraits.html">Portraits &amp; Still Life</a>
         <a href="about.html">About</a>
         <a href="contact.html">Contact</a>
     </div>
 
     <!-- Navigation arrows -->
-    <div class="gallery-arrow left" id="arrowLeft"><span>←</span></div>
-    <div class="gallery-arrow right" id="arrowRight"><span>→</span></div>
+    <div class="gallery-arrow left" id="arrowLeft"><span>&larr;</span></div>
+    <div class="gallery-arrow right" id="arrowRight"><span>&rarr;</span></div>
 
     <!-- Horizontal scrolling gallery -->
     <div class="gallery-container">
@@ -577,12 +587,13 @@
 
     <!-- Lightbox -->
     <div class="lightbox" id="lightbox">
-        <button class="close-lightbox" onclick="closeLightbox()">×</button>
+        <button class="close-lightbox" onclick="closeLightbox()">&times;</button>
         <div class="lightbox-content">
             <img src="" alt="" class="lightbox-image" id="lightboxImage">
             <div class="lightbox-info">
                 <h2 id="lightboxTitle"></h2>
                 <div class="medium" id="lightboxMedium"></div>
+                <div class="location" id="lightboxLocation"></div>
                 <div class="description" id="lightboxDescription"></div>
                 <div class="price" id="lightboxPrice"></div>
                 <a href="#" class="order-button" id="orderButton">Order Print</a>
@@ -592,25 +603,48 @@
     </div>
 
     <script>
-        // Boston paintings data
         const paintings = [
-            {title: "Midday Crossing", filename: "midday-crossing.jpg", medium: "Acrylic on Canvas", price: "300", description: "Pedestrians cross a downtown Boston intersection during the middle of the day. Figures move in multiple directions as storefronts, street signs, and passing traffic frame the scene.", availability: "yes"},
-            {title: "Downtown Crossing No 1", filename: "downtown-crossing-no-1.jpg", medium: "Acrylic on Canvas", price: "300", description: "Downtown Crossing with pedestrians crossing between shops and buildings. The scene captures the steady flow of foot traffic and everyday movement through the city.", availability: "no"},
-            {title: "Fifth Floor View", filename: "fifth-floor-view.jpg", medium: "Acrylic on Canvas", price: "300", description: "A city intersection viewed from above, showing cars stopped in traffic and pedestrians crossing at the corner. Buildings, sidewalks, and street markings define the structure of the scene.", availability: "no"},
-            {title: "Lunchtime Stroll", filename: "luchtime-stroll.jpg", medium: "Acrylic on Canvas", price: "300", description: "Pedestrians walk along a downtown Boston street during the lunch hour. Tall buildings, storefronts, and signage frame the steady movement of people passing through the city.", availability: "yes"},
-            {title: "Northend Scene", filename: "northend-scene.jpg", medium: "Acrylic on Canvas", price: "300", description: "Pedestrians walk along a narrow street in Boston's North End, passing storefronts, signs, and a busy intersection. Streetlights, traffic signals, and parked cars frame the scene as people move through the neighborhood.", availability: "yes"},
-            {title: "Outside Peet's", filename: "outside-peets.jpg", medium: "Acrylic on Canvas", price: "300", description: "People gather and pass by outside a coffee shop on a busy downtown street. Pedestrians wait at the corner while others move through the intersection, with storefronts and traffic framing the scene.", availability: "no"},
-            {title: "Park Street Station", filename: "park-street-station.jpg", medium: "Acrylic on Canvas", price: "300", description: "Passengers wait on the platform at Park Street Station in Boston, framed by columns, signage, and passing trains.", availability: "yes"},
-            {title: "Pizza", filename: "pizza.jpg", medium: "Acrylic on Canvas", price: "300", description: "People walk past a pizza shop at a city intersection, with storefronts and street traffic defining the scene.", availability: "no"},
-            {title: "Rainy Day in Boston", filename: "rainy-day-in-boston.jpg", medium: "Acrylic on Canvas", price: "300", description: "A Boston street on a rainy day, with parked cars, pedestrians, and wet pavement reflecting the surrounding buildings.", availability: "no"},
-            {title: "Rainy Day in the Northend", filename: "rainy-day-in-the-northend.jpg", medium: "Acrylic on Canvas", price: "300", description: "A rainy day on a North End street in Boston, with wet pavement, storefronts, and passing pedestrians.", availability: "yes"},
-            {title: "View Along Salem Street", filename: "view-along-salem-street.jpg", medium: "Acrylic on Canvas", price: "300", description: "Pedestrians move along Salem Street in Boston's North End, with storefronts and signage defining the street.", availability: "no"},
-            {title: "Downtown Grey", filename: "downtown-grey.jpg", medium: "Acrylic on Canvas", price: "300", description: "A pedestrian moves along a downtown Boston street, with storefronts and street fixtures defining the scene.", availability: "yes"},
-            {title: "Spring Street", filename: "spring-street.jpg", medium: "Acrylic on Canvas", price: "300", description: "Pedestrians move along Spring Street, with storefronts and street activity defining the scene.", availability: "yes"},
-            {title: "Red Line", filename: "red-line.jpg", medium: "Acrylic on Canvas", price: "300", description: "Passengers wait at Park Street Station on Boston's Red Line, framed by columns, signage, and platform seating.", availability: "yes"},
-            {title: "View From Charlestown", filename: "view-from-charlestown.jpg", medium: "Acrylic on Canvas", price: "300", description: "A Charlestown street looking toward the Boston skyline, with row houses and parked cars lining the road.", availability: "yes"},
-            {title: "Waiting No 1", filename: "waiting-no-1.jpg", medium: "Acrylic on Canvas", price: "300", description: "People wait at a city street corner near an entrance to the T, framed by storefronts and transit signage.", availability: "no"},
-            {title: "Waiting for the T", filename: "waiting-for-the-t.jpg", medium: "Acrylic on Canvas", price: "300", description: "Passengers wait at a Green Line stop in Boston, with snow, transit signage, and surrounding buildings defining the scene.", availability: "no"}
+            {title: "Midday Crossing", folder: "boston", filename: "midday-crossing.jpg", medium: "Acrylic on Canvas", location: "Boston, MA", price: "300", description: "Pedestrians cross a downtown Boston intersection during the middle of the day. Figures move in multiple directions as storefronts, street signs, and passing traffic frame the scene.", availability: "yes"},
+            {title: "Downtown Crossing No 1", folder: "boston", filename: "downtown-crossing-no-1.jpg", medium: "Acrylic on Canvas", location: "Boston, MA", price: "300", description: "Downtown Crossing with pedestrians crossing between shops and buildings. The scene captures the steady flow of foot traffic and everyday movement through the city.", availability: "no"},
+            {title: "Fifth Floor View", folder: "boston", filename: "fifth-floor-view.jpg", medium: "Acrylic on Canvas", location: "Boston, MA", price: "300", description: "A city intersection viewed from above, showing cars stopped in traffic and pedestrians crossing at the corner. Buildings, sidewalks, and street markings define the structure of the scene.", availability: "no"},
+            {title: "Lunchtime Stroll", folder: "boston", filename: "lunchtime-stroll.jpg", medium: "Acrylic on Canvas", location: "Boston, MA", price: "300", description: "Pedestrians walk along a downtown Boston street during the lunch hour. Tall buildings, storefronts, and signage frame the steady movement of people passing through the city.", availability: "yes"},
+            {title: "Northend Scene", folder: "boston", filename: "north-end-scene.jpg", medium: "Acrylic on Canvas", location: "Boston, MA", price: "300", description: "Pedestrians walk along a narrow street in Boston's North End, passing storefronts, signs, and a busy intersection. Streetlights, traffic signals, and parked cars frame the scene as people move through the neighborhood.", availability: "yes"},
+            {title: "Outside Peet's", folder: "boston", filename: "outside-peets.jpg", medium: "Acrylic on Canvas", location: "Boston, MA", price: "300", description: "People gather and pass by outside a coffee shop on a busy downtown street. Pedestrians wait at the corner while others move through the intersection, with storefronts and traffic framing the scene.", availability: "no"},
+            {title: "Park Street Station", folder: "boston", filename: "park-street-station.jpg", medium: "Acrylic on Canvas", location: "Boston, MA", price: "300", description: "Passengers wait on the platform at Park Street Station in Boston, framed by columns, signage, and passing trains.", availability: "yes"},
+            {title: "Pizza", folder: "boston", filename: "pizza.jpg", medium: "Acrylic on Canvas", location: "Boston, MA", price: "300", description: "People walk past a pizza shop at a city intersection, with storefronts and street traffic defining the scene.", availability: "no"},
+            {title: "Rainy Day in Boston", folder: "boston", filename: "rainy-day-in-boston.jpg", medium: "Acrylic on Canvas", location: "Boston, MA", price: "300", description: "A Boston street on a rainy day, with parked cars, pedestrians, and wet pavement reflecting the surrounding buildings.", availability: "no"},
+            {title: "Rainy Day in the North End", folder: "boston", filename: "rainy-day-in-the-north-end.jpg", medium: "Acrylic on Canvas", location: "Boston, MA", price: "300", description: "A rainy day on a North End street in Boston, with wet pavement, storefronts, and passing pedestrians.", availability: "yes"},
+            {title: "View Along Salem Street", folder: "boston", filename: "view-along-salem-street.jpg", medium: "Acrylic on Canvas", location: "Boston, MA", price: "300", description: "Pedestrians move along Salem Street in Boston's North End, with storefronts and signage defining the street.", availability: "no"},
+            {title: "Downtown Grey", folder: "boston", filename: "downtown-grey.jpg", medium: "Acrylic on Canvas", location: "Boston, MA", price: "300", description: "A pedestrian moves along a downtown Boston street, with storefronts and street fixtures defining the scene.", availability: "yes"},
+            {title: "Spring Street", folder: "boston", filename: "spring-street.jpg", medium: "Acrylic on Canvas", location: "Boston, MA", price: "300", description: "Pedestrians move along Spring Street, with storefronts and street activity defining the scene.", availability: "yes"},
+            {title: "Red Line", folder: "boston", filename: "red-line.jpg", medium: "Acrylic on Canvas", location: "Boston, MA", price: "300", description: "Passengers wait at Park Street Station on Boston's Red Line, framed by columns, signage, and platform seating.", availability: "yes"},
+            {title: "View From Charlestown", folder: "boston", filename: "view-from-charlestown.jpg", medium: "Acrylic on Canvas", location: "Boston, MA", price: "300", description: "A Charlestown street looking toward the Boston skyline, with row houses and parked cars lining the road.", availability: "yes"},
+            {title: "Waiting No 1", folder: "boston", filename: "waiting-no-1.jpg", medium: "Acrylic on Canvas", location: "Boston, MA", price: "300", description: "People wait at a city street corner near an entrance to the T, framed by storefronts and transit signage.", availability: "no"},
+            {title: "Waiting for the T", folder: "boston", filename: "waiting-for-the-t.jpg", medium: "Acrylic on Canvas", location: "Boston, MA", price: "300", description: "Passengers wait at a Green Line stop in Boston, with snow, transit signage, and surrounding buildings defining the scene.", availability: "no"},
+            {title: "Wondering", folder: "delaware", filename: "wondering.jpg", medium: "Acrylic on Canvas", location: "Delaware, OH", price: "300", description: "A woman walks along a city sidewalk as groups of pedestrians move in the opposite direction. Storefronts, trees, and passing foot traffic frame the scene of everyday street activity.", availability: "yes"},
+            {title: "At the Parade", folder: "delaware", filename: "at-the-parade.jpg", medium: "Acrylic on Canvas", location: "Delaware, OH", price: "300", description: "Families move along a street in Delaware, Ohio, as spectators wait for the All Horse Parade.", availability: "yes"},
+            {title: "Browsing", folder: "delaware", filename: "browsing.jpg", medium: "Acrylic on Canvas", location: "Delaware, OH", price: "300", description: "Visitors browse between vendor tents at an outdoor market in Delaware, Ohio.", availability: "yes"},
+            {title: "Clancey's", folder: "delaware", filename: "clanceys.jpg", medium: "Acrylic on Canvas", location: "Delaware, OH", price: "300", description: "Clancey's Pub sign viewed along a city street, framed by nearby buildings and signage.", availability: "yes"},
+            {title: "Dairy Depot", folder: "delaware", filename: "dairy-depot.jpg", medium: "Acrylic on Canvas", location: "Delaware, OH", price: "300", description: "Customers and pedestrians gather outside the Dairy Depot in Delaware, Ohio, awaiting a parade.", availability: "no"},
+            {title: "Diner", folder: "delaware", filename: "diner.jpg", medium: "Acrylic on Canvas", location: "Delaware, OH", price: "300", description: "Customers sit and eat inside the Hamburger Inn diner in Delaware, Ohio, with the counter and interior framing the scene.", availability: "yes"},
+            {title: "Downtown Summer Evening", folder: "delaware", filename: "downtown-summer-evening.jpg", medium: "Acrylic on Canvas", location: "Delaware, OH", price: "300", description: "Downtown Delaware, Ohio in the evening, with vehicles, buildings, and street activity visible in summer light.", availability: "yes"},
+            {title: "Crossing", folder: "delaware", filename: "crossing.jpg", medium: "Acrylic on Canvas", location: "Delaware, OH", price: "300", description: "Pedestrians cross an intersection in downtown Delaware, Ohio, framed by storefronts and surrounding buildings.", availability: "yes"},
+            {title: "Father and Son Conversation", folder: "delaware", filename: "father-and-son-conversation.jpg", medium: "Acrylic on Canvas", location: "Delaware, OH", price: "300", description: "A father and son pause on the steps of a building, engaged in conversation.", availability: "yes"},
+            {title: "Hayes", folder: "delaware", filename: "hayes.jpg", medium: "Acrylic on Canvas", location: "Delaware, OH", price: "300", description: "People walk and gather near the Hayes statue in downtown Delaware, Ohio, with surrounding buildings and outdoor seating visible.", availability: "yes"},
+            {title: "Looking out the Window", folder: "delaware", filename: "looking-out-the-window.jpg", medium: "Acrylic on Canvas", location: "Delaware, OH", price: "300", description: "Downtown Delaware, Ohio, seen through a storefront window, with reflections and passing pedestrians.", availability: "no"},
+            {title: "Street Walking", folder: "delaware", filename: "street-walking.jpg", medium: "Acrylic on Canvas", location: "Delaware, OH", price: "300", description: "People walk through downtown Delaware, Ohio, with storefronts and foot traffic defining the scene.", availability: "yes"},
+            {title: "Two Men Walking", folder: "delaware", filename: "two-men-walking.jpg", medium: "Acrylic on Canvas", location: "Delaware, OH", price: "300", description: "Two men walk along a sidewalk beside a brick alleyway in downtown Delaware, Ohio.", availability: "no"},
+            {title: "Waiting No 2", folder: "delaware", filename: "waiting-no-2.jpg", medium: "Acrylic on Canvas", location: "Delaware, OH", price: "300", description: "Three people wait on the sidewalk outside a shop, with storefront windows and street signage surrounding them.", availability: "no"},
+            {title: "Bathers at Nantasket Beach No 1", folder: "misc", filename: "bathers-at-nantasket-beach-no-1.jpg", medium: "Acrylic on Canvas", location: "Hull, MA", price: "300", description: "Families and children gather along the shoreline at Nantasket Beach on a summer afternoon. Some wade in the shallows while others stand back, watching the water and the activity around them.", availability: "yes"},
+            {title: "Bathers at Nantasket Beach No 2", folder: "misc", filename: "bathers-at-nantasket-beach-no-2.jpg", medium: "Acrylic on Canvas", location: "Hull, MA", price: "300", description: "A wide view of Nantasket Beach on a busy summer day, with beachgoers seated in chairs and tents while others move between sand and surf. The scene captures the density and casual pace of a crowded shoreline.", availability: "yes"},
+            {title: "Hingham Farmers Market", folder: "misc", filename: "hingham-farmers-market.jpg", medium: "Acrylic on Canvas", location: "Hingham, MA", price: "300", description: "Shoppers move through an outdoor market in Hingham, Massachusetts. Vendor tents, food stands, and small groups of people create a busy scene of casual browsing, conversation, and everyday activity.", availability: "yes"},
+            {title: "At Plymouth Farmers Market", folder: "misc", filename: "at-plymouth-farmers-market.jpg", medium: "Acrylic on Canvas", location: "Plymouth, MA", price: "300", description: "People stand in line at an outdoor farmers market in Plymouth, Massachusetts, as a vendor prepares food beneath tents and canopies.", availability: "yes"},
+            {title: "Lobster Shack", folder: "misc", filename: "lobster-shack.jpg", medium: "Acrylic on Canvas", location: "Wiscasset, ME", price: "300", description: "People stand and sit at picnic tables near a waterfront lobster shack in Wiscasset, Maine, with signage and umbrellas along a wooden deck.", availability: "yes"},
+            {title: "Red's Eats", folder: "misc", filename: "reds-eats.jpg", medium: "Acrylic on Canvas", location: "Wiscasset, ME", price: "300", description: "A line of people waits outside Red's Eats in Wiscasset, Maine, clustered beneath umbrellas along a busy street corner.", availability: "yes"},
+            {title: "Sale Day in Damariscotta", folder: "misc", filename: "sale-day-in-damariscotta.jpg", medium: "Acrylic on Canvas", location: "Damariscotta, ME", price: "300", description: "A crowd stands and walks along a downtown sidewalk in Damariscotta, Maine, during a sale day, with storefront signs, parked cars, and street traffic in the background.", availability: "yes"},
+            {title: "Two Men at a Coffee Shop", folder: "misc", filename: "two-men-at-a-coffee-shop.jpg", medium: "Acrylic on Canvas", location: "Location n/a", price: "300", description: "Two men sit outside a coffee shop at a small table, one focused on his phone while the other looks outward, with storefront reflections visible in the window.", availability: "yes"},
+            {title: "Where are the Sheep", folder: "misc", filename: "where-are-the-sheep.jpg", medium: "Acrylic on Canvas", location: "Location n/a", price: "300", description: "People gather at the opening of a barn as a man in overalls speaks, with red barn doors and a farmyard behind them.", availability: "yes"},
+            {title: "Woman in Plymouth", folder: "misc", filename: "woman-in-plymouth.jpg", medium: "Acrylic on Canvas", location: "Plymouth, MA", price: "300", description: "A woman walks along a waterfront path beside a stone wall, with water and boats visible in the background in Plymouth, Massachusetts.", availability: "yes"}
         ];
 
         // Generate gallery
@@ -618,7 +652,7 @@
         paintings.forEach((painting, index) => {
             const item = document.createElement('div');
             item.className = 'painting-item';
-            item.innerHTML = `<img src="images/paintings/boston/${painting.filename}" alt="${painting.title}"><div class="painting-caption"><div class="title">${painting.title}</div><div class="medium">${painting.medium}</div></div>`;
+            item.innerHTML = `<img src="images/paintings/${painting.folder}/${painting.filename}" alt="${painting.title}"><div class="painting-caption"><div class="title">${painting.title}</div><div class="medium">${painting.medium}</div></div>`;
             item.onclick = () => openLightbox(index);
             gallery.appendChild(item);
         });
@@ -626,10 +660,11 @@
         // Lightbox functions
         function openLightbox(index) {
             const painting = paintings[index];
-            document.getElementById('lightboxImage').src = `images/paintings/boston/${painting.filename}`;
+            document.getElementById('lightboxImage').src = `images/paintings/${painting.folder}/${painting.filename}`;
             document.getElementById('lightboxImage').alt = painting.title;
             document.getElementById('lightboxTitle').textContent = painting.title;
             document.getElementById('lightboxMedium').textContent = painting.medium;
+            document.getElementById('lightboxLocation').textContent = painting.location;
             document.getElementById('lightboxDescription').textContent = painting.description;
             document.getElementById('lightboxPrice').textContent = `From $${painting.price}`;
             if (painting.availability === 'yes') {
@@ -649,18 +684,12 @@
             document.body.style.overflow = 'auto';
         }
 
-        // Close lightbox on background click
         document.getElementById('lightbox').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeLightbox();
-            }
+            if (e.target === this) closeLightbox();
         });
 
-        // Close lightbox with Escape key
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeLightbox();
-            }
+            if (e.key === 'Escape') closeLightbox();
         });
 
         // Smooth page transitions
@@ -669,13 +698,11 @@
                 e.preventDefault();
                 const href = this.getAttribute('href');
                 document.body.classList.add('fade-out');
-                setTimeout(() => {
-                    window.location.href = href;
-                }, 500);
+                setTimeout(() => { window.location.href = href; }, 500);
             });
         });
 
-        // Circular arrow navigation using current painting index
+        // Circular arrow navigation
         const container = document.querySelector('.gallery-container');
         const arrowLeft = document.getElementById('arrowLeft');
         const arrowRight = document.getElementById('arrowRight');
@@ -697,7 +724,6 @@
             const items = document.querySelectorAll('.painting-item');
             const item = items[currentIndex];
             const targetLeft = item.offsetLeft - 96;
-            // If wrapping to first, jump instantly then no animation needed
             if (currentIndex === 0) {
                 container.scrollTo({ left: 0, behavior: 'auto' });
             } else {
@@ -711,7 +737,6 @@
             const items = document.querySelectorAll('.painting-item');
             const item = items[currentIndex];
             const targetLeft = item.offsetLeft - 96;
-            // If wrapping to last, jump instantly
             if (currentIndex === totalPaintings - 1) {
                 container.scrollTo({ left: container.scrollWidth, behavior: 'auto' });
             } else {
@@ -719,7 +744,6 @@
             }
         });
 
-        // Keep currentIndex synced when user scrolls manually
         container.addEventListener('scrollend', function() {
             const items = document.querySelectorAll('.painting-item');
             const center = container.scrollLeft + container.clientWidth / 2;
@@ -732,14 +756,13 @@
             currentIndex = closest;
         });
 
-        // Hamburger menu toggle
         function toggleMenu() {
             document.getElementById('hamburger').classList.toggle('active');
             document.getElementById('mobileMenu').classList.toggle('open');
             document.getElementById('mobileBackdrop').classList.toggle('open');
         }
 
-        console.log('Boston gallery loaded:', paintings.length, 'paintings');
+        console.log('Everyday Life gallery loaded:', paintings.length, 'paintings');
     </script>
 </body>
 </html>
