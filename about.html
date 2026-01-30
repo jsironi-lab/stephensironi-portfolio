@@ -170,12 +170,32 @@
             color: #fff;
         }
 
+        /* Mobile menu backdrop */
+        .mobile-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1400;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        .mobile-backdrop.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
         /* Slide-out mobile menu */
         .mobile-menu {
             position: fixed;
             top: 0;
             right: 0;
-            width: 100%;
+            width: 80%;
+            max-width: 360px;
             height: 100%;
             background: #fff;
             z-index: 1500;
@@ -191,6 +211,25 @@
         .mobile-menu.open {
             transform: translateX(0);
             visibility: visible;
+        }
+
+        .mobile-menu-close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: none;
+            border: none;
+            color: rgba(0, 0, 0, 0.6);
+            font-size: 1.8rem;
+            font-weight: 200;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+            transition: color 0.3s ease;
+        }
+
+        .mobile-menu-close:hover {
+            color: #000;
         }
 
         .mobile-menu a {
@@ -265,8 +304,12 @@
         </div>
     </nav>
 
+    <!-- Mobile backdrop -->
+    <div class="mobile-backdrop" id="mobileBackdrop" onclick="toggleMenu()"></div>
+
     <!-- Mobile slide-out menu -->
     <div class="mobile-menu" id="mobileMenu">
+        <button class="mobile-menu-close" onclick="toggleMenu()">&times;</button>
         <a href="boston.html">Boston, MA</a>
         <a href="delaware.html">Delaware, OH</a>
         <a href="misc.html">Other Works</a>
@@ -290,6 +333,7 @@
         function toggleMenu() {
             document.getElementById('hamburger').classList.toggle('active');
             document.getElementById('mobileMenu').classList.toggle('open');
+            document.getElementById('mobileBackdrop').classList.toggle('open');
         }
 
         // Smooth page transitions
