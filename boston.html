@@ -456,7 +456,7 @@
 
             .gallery-scroll {
                 flex-direction: column;
-                padding: 1rem 1.5rem 3rem 1.5rem;
+                padding: 1rem 0 3rem 0;
                 gap: 2.5rem;
                 height: auto;
             }
@@ -470,6 +470,12 @@
             .painting-item img {
                 width: 100%;
                 height: auto;
+                object-fit: cover;
+            }
+
+            .painting-caption {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
             }
 
             .gallery-arrow {
