@@ -302,8 +302,17 @@
             font-size: 0.85rem;
             font-weight: 300;
             color: rgba(0, 0, 0, 0.6);
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             letter-spacing: 1px;
+        }
+
+        .lightbox-info .description {
+            font-family: 'Work Sans', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 300;
+            color: rgba(0, 0, 0, 0.55);
+            line-height: 1.7;
+            margin-bottom: 2rem;
         }
 
         .lightbox-info .price {
@@ -562,6 +571,7 @@
             <div class="lightbox-info">
                 <h2 id="lightboxTitle"></h2>
                 <div class="medium" id="lightboxMedium"></div>
+                <div class="description" id="lightboxDescription"></div>
                 <div class="price" id="lightboxPrice"></div>
                 <a href="#" class="order-button" id="orderButton">Order Print</a>
             </div>
@@ -571,23 +581,23 @@
     <script>
         // Boston paintings data
         const paintings = [
-            {title: "Midday Crossing", filename: "midday-crossing.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Downtown Crossing No 1", filename: "downtown-crossing-no-1.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Fifth Floor View", filename: "fifth-floor-view.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Lunchtime Stroll", filename: "luchtime-stroll.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Northend Scene", filename: "northend-scene.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Outside Peet's", filename: "outside-peets.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Park Street Station", filename: "park-street-station.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Pizza", filename: "pizza.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Rainy Day in Boston", filename: "rainy-day-in-boston.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Rainy Day in the Northend", filename: "rainy-day-in-the-northend.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "View Along Salem Street", filename: "view-along-salem-street.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Downtown Grey", filename: "downtown-grey.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Spring Street", filename: "spring-street.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Red Line", filename: "red-line.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "View From Charlestown", filename: "view-from-charlestown.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Waiting No 1", filename: "waiting-no-1.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Waiting for the T", filename: "waiting-for-the-t.jpg", medium: "Acrylic on Canvas", price: "300"}
+            {title: "Midday Crossing", filename: "midday-crossing.jpg", medium: "Acrylic on Canvas", price: "300", description: "Pedestrians cross a downtown Boston intersection during the middle of the day. Figures move in multiple directions as storefronts, street signs, and passing traffic frame the scene."},
+            {title: "Downtown Crossing No 1", filename: "downtown-crossing-no-1.jpg", medium: "Acrylic on Canvas", price: "300", description: "Downtown Crossing with pedestrians crossing between shops and buildings. The scene captures the steady flow of foot traffic and everyday movement through the city."},
+            {title: "Fifth Floor View", filename: "fifth-floor-view.jpg", medium: "Acrylic on Canvas", price: "300", description: "A city intersection viewed from above, showing cars stopped in traffic and pedestrians crossing at the corner. Buildings, sidewalks, and street markings define the structure of the scene."},
+            {title: "Lunchtime Stroll", filename: "luchtime-stroll.jpg", medium: "Acrylic on Canvas", price: "300", description: "Pedestrians walk along a downtown Boston street during the lunch hour. Tall buildings, storefronts, and signage frame the steady movement of people passing through the city."},
+            {title: "Northend Scene", filename: "northend-scene.jpg", medium: "Acrylic on Canvas", price: "300", description: "Pedestrians walk along a narrow street in Boston's North End, passing storefronts, signs, and a busy intersection. Streetlights, traffic signals, and parked cars frame the scene as people move through the neighborhood."},
+            {title: "Outside Peet's", filename: "outside-peets.jpg", medium: "Acrylic on Canvas", price: "300", description: "People gather and pass by outside a coffee shop on a busy downtown street. Pedestrians wait at the corner while others move through the intersection, with storefronts and traffic framing the scene."},
+            {title: "Park Street Station", filename: "park-street-station.jpg", medium: "Acrylic on Canvas", price: "300", description: "Passengers wait on the platform at Park Street Station in Boston, framed by columns, signage, and passing trains."},
+            {title: "Pizza", filename: "pizza.jpg", medium: "Acrylic on Canvas", price: "300", description: "People walk past a pizza shop at a city intersection, with storefronts and street traffic defining the scene."},
+            {title: "Rainy Day in Boston", filename: "rainy-day-in-boston.jpg", medium: "Acrylic on Canvas", price: "300", description: "A Boston street on a rainy day, with parked cars, pedestrians, and wet pavement reflecting the surrounding buildings."},
+            {title: "Rainy Day in the Northend", filename: "rainy-day-in-the-northend.jpg", medium: "Acrylic on Canvas", price: "300", description: "A rainy day on a North End street in Boston, with wet pavement, storefronts, and passing pedestrians."},
+            {title: "View Along Salem Street", filename: "view-along-salem-street.jpg", medium: "Acrylic on Canvas", price: "300", description: "Pedestrians move along Salem Street in Boston's North End, with storefronts and signage defining the street."},
+            {title: "Downtown Grey", filename: "downtown-grey.jpg", medium: "Acrylic on Canvas", price: "300", description: "A pedestrian moves along a downtown Boston street, with storefronts and street fixtures defining the scene."},
+            {title: "Spring Street", filename: "spring-street.jpg", medium: "Acrylic on Canvas", price: "300", description: "Pedestrians move along Spring Street, with storefronts and street activity defining the scene."},
+            {title: "Red Line", filename: "red-line.jpg", medium: "Acrylic on Canvas", price: "300", description: "Passengers wait at Park Street Station on Boston's Red Line, framed by columns, signage, and platform seating."},
+            {title: "View From Charlestown", filename: "view-from-charlestown.jpg", medium: "Acrylic on Canvas", price: "300", description: "A Charlestown street looking toward the Boston skyline, with row houses and parked cars lining the road."},
+            {title: "Waiting No 1", filename: "waiting-no-1.jpg", medium: "Acrylic on Canvas", price: "300", description: "People wait at a city street corner near an entrance to the T, framed by storefronts and transit signage."},
+            {title: "Waiting for the T", filename: "waiting-for-the-t.jpg", medium: "Acrylic on Canvas", price: "300", description: "Passengers wait at a Green Line stop in Boston, with snow, transit signage, and surrounding buildings defining the scene."}
         ];
 
         // Generate gallery
@@ -607,6 +617,7 @@
             document.getElementById('lightboxImage').alt = painting.title;
             document.getElementById('lightboxTitle').textContent = painting.title;
             document.getElementById('lightboxMedium').textContent = painting.medium;
+            document.getElementById('lightboxDescription').textContent = painting.description;
             document.getElementById('lightboxPrice').textContent = `From $${painting.price}`;
             document.getElementById('orderButton').href = `contact.html?painting=${encodeURIComponent(painting.title)}`;
             document.getElementById('lightbox').classList.add('active');

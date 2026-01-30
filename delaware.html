@@ -302,8 +302,17 @@
             font-size: 0.85rem;
             font-weight: 300;
             color: rgba(0, 0, 0, 0.6);
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             letter-spacing: 1px;
+        }
+
+        .lightbox-info .description {
+            font-family: 'Work Sans', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 300;
+            color: rgba(0, 0, 0, 0.55);
+            line-height: 1.7;
+            margin-bottom: 2rem;
         }
 
         .lightbox-info .price {
@@ -560,6 +569,7 @@
             <div class="lightbox-info">
                 <h2 id="lightboxTitle"></h2>
                 <div class="medium" id="lightboxMedium"></div>
+                <div class="description" id="lightboxDescription"></div>
                 <div class="price" id="lightboxPrice"></div>
                 <a href="#" class="order-button" id="orderButton">Order Print</a>
             </div>
@@ -569,21 +579,21 @@
     <script>
         // Delaware paintings data
         const paintings = [
-            {title: "Wondering", filename: "wondering.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "At the Parade", filename: "at-the-parade.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Browsing", filename: "browsing.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Clancey's", filename: "clanceys.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Dairy Depot", filename: "dairy-depot.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Diner", filename: "diner.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Downtown Summer Evening", filename: "downtown-summer-evening.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Crossing", filename: "crossing.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Father and Son Conversation", filename: "father-and-son-conversation.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Hayes", filename: "hayes.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Looking out the Window", filename: "looking-out-the-window.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Street Walking", filename: "street-walking.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Two Men Walking", filename: "two-men-walking.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Waiting No 2", filename: "waiting-no-2.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Watching the Eclipse", filename: "watching-the-eclipse.jpg", medium: "Acrylic on Canvas", price: "300"}
+            {title: "Wondering", filename: "wondering.jpg", medium: "Acrylic on Canvas", price: "300", description: "A woman walks along a city sidewalk as groups of pedestrians move in the opposite direction. Storefronts, trees, and passing foot traffic frame the scene of everyday street activity."},
+            {title: "At the Parade", filename: "at-the-parade.jpg", medium: "Acrylic on Canvas", price: "300", description: "Families move along a street in Delaware, Ohio, as spectators wait for the All Horse Parade."},
+            {title: "Browsing", filename: "browsing.jpg", medium: "Acrylic on Canvas", price: "300", description: "Visitors browse between vendor tents at an outdoor market in Delaware, Ohio."},
+            {title: "Clancey's", filename: "clanceys.jpg", medium: "Acrylic on Canvas", price: "300", description: "Clancey's Pub sign viewed along a city street, framed by nearby buildings and signage."},
+            {title: "Dairy Depot", filename: "dairy-depot.jpg", medium: "Acrylic on Canvas", price: "300", description: "Customers and pedestrians gather outside the Dairy Depot in Delaware, Ohio, awaiting a parade."},
+            {title: "Diner", filename: "diner.jpg", medium: "Acrylic on Canvas", price: "300", description: "Customers sit and eat inside the Hamburger Inn diner in Delaware, Ohio, with the counter and interior framing the scene."},
+            {title: "Downtown Summer Evening", filename: "downtown-summer-evening.jpg", medium: "Acrylic on Canvas", price: "300", description: "Downtown Delaware, Ohio in the evening, with vehicles, buildings, and street activity visible in summer light."},
+            {title: "Crossing", filename: "crossing.jpg", medium: "Acrylic on Canvas", price: "300", description: "Pedestrians cross an intersection in downtown Delaware, Ohio, framed by storefronts and surrounding buildings."},
+            {title: "Father and Son Conversation", filename: "father-and-son-conversation.jpg", medium: "Acrylic on Canvas", price: "300", description: "A father and son pause on the steps of a building, engaged in conversation."},
+            {title: "Hayes", filename: "hayes.jpg", medium: "Acrylic on Canvas", price: "300", description: "People walk and gather near the Hayes statue in downtown Delaware, Ohio, with surrounding buildings and outdoor seating visible."},
+            {title: "Looking out the Window", filename: "looking-out-the-window.jpg", medium: "Acrylic on Canvas", price: "300", description: "Downtown Delaware, Ohio, seen through a storefront window, with reflections and passing pedestrians."},
+            {title: "Street Walking", filename: "street-walking.jpg", medium: "Acrylic on Canvas", price: "300", description: "People walk through downtown Delaware, Ohio, with storefronts and foot traffic defining the scene."},
+            {title: "Two Men Walking", filename: "two-men-walking.jpg", medium: "Acrylic on Canvas", price: "300", description: "Two men walk along a sidewalk beside a brick alleyway in downtown Delaware, Ohio."},
+            {title: "Waiting No 2", filename: "waiting-no-2.jpg", medium: "Acrylic on Canvas", price: "300", description: "Three people wait on the sidewalk outside a shop, with storefront windows and street signage surrounding them."},
+            {title: "Watching the Eclipse", filename: "watching-the-eclipse.jpg", medium: "Acrylic on Canvas", price: "300", description: "A seated crowd wearing eclipse glasses looks upward during a solar eclipse, with chairs and parked cars visible behind them."}
         ];
 
         // Generate gallery
@@ -603,6 +613,7 @@
             document.getElementById('lightboxImage').alt = painting.title;
             document.getElementById('lightboxTitle').textContent = painting.title;
             document.getElementById('lightboxMedium').textContent = painting.medium;
+            document.getElementById('lightboxDescription').textContent = painting.description;
             document.getElementById('lightboxPrice').textContent = `From $${painting.price}`;
             document.getElementById('orderButton').href = `contact.html?painting=${encodeURIComponent(painting.title)}`;
             document.getElementById('lightbox').classList.add('active');

@@ -302,8 +302,17 @@
             font-size: 0.85rem;
             font-weight: 300;
             color: rgba(0, 0, 0, 0.6);
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             letter-spacing: 1px;
+        }
+
+        .lightbox-info .description {
+            font-family: 'Work Sans', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 300;
+            color: rgba(0, 0, 0, 0.55);
+            line-height: 1.7;
+            margin-bottom: 2rem;
         }
 
         .lightbox-info .price {
@@ -560,6 +569,7 @@
             <div class="lightbox-info">
                 <h2 id="lightboxTitle"></h2>
                 <div class="medium" id="lightboxMedium"></div>
+                <div class="description" id="lightboxDescription"></div>
                 <div class="price" id="lightboxPrice"></div>
                 <a href="#" class="order-button" id="orderButton">Order Print</a>
             </div>
@@ -569,31 +579,31 @@
     <script>
         // Misc paintings data
         const paintings = [
-            {title: "Bathers at Nantasket Beach No 1", filename: "bathers-at-nantasket-beach-no-1.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Bathers at Nantasket Beach No 2", filename: "bathers-at-nantasket-beach-no-2.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Hingham Farmers Market", filename: "hingham-farmers-market.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "At Plymouth Farmers Market", filename: "at-plymouth-farmers-market.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Dancing in the Street Provincetown", filename: "dancing-in-the-street-provincetown.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Suzette No 1", filename: "suzette-no-1.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Lobster Shack", filename: "lobster-shack.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Man in Pink Shirt", filename: "man-in-pink-shirt.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Moshing", filename: "moshing.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Only Have Eyes for You", filename: "only-have-eyes-for-you.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Pipers on Parade", filename: "pipers-on-parade.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Red's Eats", filename: "reds-eats.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Some People Like to Dance", filename: "some-people-like-to-dance.jpg", medium: "Mixed-media Collage", price: "300"},
-            {title: "Doughnuts", filename: "doughnuts.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Linda", filename: "linda.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Sale Day in Damariscotta", filename: "sale-day-in-damariscotta.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Skiier in Gondola", filename: "skiier-in-gondola.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Man in Beige", filename: "man-in-beige.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Kayaks", filename: "kayaks.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Two Men at a Coffe Shop", filename: "two-men-at-a-coffee-shop.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Where are the Sheep", filename: "where-are-the-sheep.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Woman in Plymouth", filename: "woman-in-plymouth.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Young Man at the Ready", filename: "young-man-at-the-ready.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Suzette No 2", filename: "suzette-no-2.jpg", medium: "Acrylic on Canvas", price: "300"},
-            {title: "Self Portrait", filename: "self-portrait.jpg", medium: "Acrylic on Canvas", price: "300"}
+            {title: "Bathers at Nantasket Beach No 1", filename: "bathers-at-nantasket-beach-no-1.jpg", medium: "Acrylic on Canvas", price: "300", description: "Families and children gather along the shoreline at Nantasket Beach on a summer afternoon. Some wade in the shallows while others stand back, watching the water and the activity around them."},
+            {title: "Bathers at Nantasket Beach No 2", filename: "bathers-at-nantasket-beach-no-2.jpg", medium: "Acrylic on Canvas", price: "300", description: "A wide view of Nantasket Beach on a busy summer day, with beachgoers seated in chairs and tents while others move between sand and surf. The scene captures the density and casual pace of a crowded shoreline."},
+            {title: "Hingham Farmers Market", filename: "hingham-farmers-market.jpg", medium: "Acrylic on Canvas", price: "300", description: "Shoppers move through an outdoor market in Hingham, Massachusetts. Vendor tents, food stands, and small groups of people create a busy scene of casual browsing, conversation, and everyday activity."},
+            {title: "At Plymouth Farmers Market", filename: "at-plymouth-farmers-market.jpg", medium: "Acrylic on Canvas", price: "300", description: "People stand in line at an outdoor farmers market in Plymouth, Massachusetts, as a vendor prepares food beneath tents and canopies."},
+            {title: "Dancing in the Street Provincetown", filename: "dancing-in-the-street-provincetown.jpg", medium: "Acrylic on Canvas", price: "300", description: "People in traditional costumes dance in the street in Provincetown, Massachusetts, as onlookers stand along the sidewalk."},
+            {title: "Suzette No 1", filename: "suzette-no-1.jpg", medium: "Acrylic on Canvas", price: "300", description: "A woman sits at a bar holding a drink, with the bar interior behind her."},
+            {title: "Lobster Shack", filename: "lobster-shack.jpg", medium: "Acrylic on Canvas", price: "300", description: "People stand and sit at picnic tables near a waterfront lobster shack in Wiscasset, Maine, with signage and umbrellas along a wooden deck."},
+            {title: "Man in Pink Shirt", filename: "man-in-pink-shirt.jpg", medium: "Acrylic on Canvas", price: "300", description: "A man in a pink shirt stands in front of a yellow background, holding an object."},
+            {title: "Moshing", filename: "moshing.jpg", medium: "Acrylic on Canvas", price: "300", description: "Figures with raised arms cluster together as one person is lifted above the group, creating a layered scene of movement and contact."},
+            {title: "Only Have Eyes for You", filename: "only-have-eyes-for-you.jpg", medium: "Acrylic on Canvas", price: "300", description: "Newlyweds dance closely in the foreground while groups of people mingle in a warmly lit space behind them."},
+            {title: "Pipers on Parade", filename: "pipers-on-parade.jpg", medium: "Acrylic on Canvas", price: "300", description: "Bagpipers in uniform march past a gathered crowd, performing along a city sidewalk."},
+            {title: "Red's Eats", filename: "reds-eats.jpg", medium: "Acrylic on Canvas", price: "300", description: "A line of people waits outside Red's Eats in Wiscasset, Maine, clustered beneath umbrellas along a busy street corner."},
+            {title: "Some People Like to Dance", filename: "some-people-like-to-dance.jpg", medium: "Mixed-media Collage", price: "300", description: "Overlapping cut-out figures of dancers and musicians fill the frame, layered over a crowded outdoor gathering."},
+            {title: "Doughnuts", filename: "doughnuts.jpg", medium: "Acrylic on Canvas", price: "300", description: "Assorted doughnuts are stacked in rows, their glazes and fillings rendered with broad, textured brushstrokes."},
+            {title: "Linda", filename: "linda.jpg", medium: "Acrylic on Canvas", price: "300", description: "A woman reads a newspaper while reclining in a striped armchair, her feet propped on a footstool in a softly lit interior."},
+            {title: "Sale Day in Damariscotta", filename: "sale-day-in-damariscotta.jpg", medium: "Acrylic on Canvas", price: "300", description: "A crowd stands and walks along a downtown sidewalk in Damariscotta, Maine, during a sale day, with storefront signs, parked cars, and street traffic in the background."},
+            {title: "Skiier in Gondola", filename: "skiier-in-gondola.jpg", medium: "Acrylic on Canvas", price: "300", description: "A skier in winter gear sits inside a gondola, with snow-covered mountains visible through the windows."},
+            {title: "Man in Beige", filename: "man-in-beige.jpg", medium: "Acrylic on Canvas", price: "300", description: "A man in a light shirt and beige pants walks along a sidewalk holding a paper shopping bag, with storefront windows in the background."},
+            {title: "Kayaks", filename: "kayaks.jpg", medium: "Acrylic on Canvas", price: "300", description: "Boats rest along the shoreline at night as moonlight reflects across calm water, with trees visible along the lake's edge."},
+            {title: "Two Men at a Coffe Shop", filename: "two-men-at-a-coffee-shop.jpg", medium: "Acrylic on Canvas", price: "300", description: "Two men sit outside a coffee shop at a small table, one focused on his phone while the other looks outward, with storefront reflections visible in the window."},
+            {title: "Where are the Sheep", filename: "where-are-the-sheep.jpg", medium: "Acrylic on Canvas", price: "300", description: "People gather at the opening of a barn as a man in overalls speaks, with red barn doors and a farmyard behind them."},
+            {title: "Woman in Plymouth", filename: "woman-in-plymouth.jpg", medium: "Acrylic on Canvas", price: "300", description: "A woman walks along a waterfront path beside a stone wall, with water and boats visible in the background in Plymouth, Massachusetts."},
+            {title: "Young Man at the Ready", filename: "young-man-at-the-ready.jpg", medium: "Acrylic on Canvas", price: "300", description: "A man in a safety vest stands beside a green cart on a paved area, with buildings visible behind him."},
+            {title: "Suzette No 2", filename: "suzette-no-2.jpg", medium: "Acrylic on Canvas", price: "300", description: "A seated woman smiles softly, set against a dark background."},
+            {title: "Self Portrait", filename: "self-portrait.jpg", medium: "Acrylic on Canvas", price: "300", description: "A self-portrait of the artist."}
         ];
 
         // Generate gallery
@@ -613,6 +623,7 @@
             document.getElementById('lightboxImage').alt = painting.title;
             document.getElementById('lightboxTitle').textContent = painting.title;
             document.getElementById('lightboxMedium').textContent = painting.medium;
+            document.getElementById('lightboxDescription').textContent = painting.description;
             document.getElementById('lightboxPrice').textContent = `From $${painting.price}`;
             document.getElementById('orderButton').href = `contact.html?painting=${encodeURIComponent(painting.title)}`;
             document.getElementById('lightbox').classList.add('active');
