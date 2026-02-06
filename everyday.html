@@ -605,8 +605,7 @@
                 <div class="size" id="lightboxSize"></div>
                 <div class="location" id="lightboxLocation"></div>
                 <div class="description" id="lightboxDescription"></div>
-                <div class="price" id="lightboxPrice"></div>
-                <a href="#" class="order-button" id="orderButton">Order Print</a>
+                <a href="#" class="order-button" id="orderButton">Inquire</a>
                 <div class="unavailable-badge" id="unavailableBadge" style="display:none;">Temporarily Unavailable</div>
             </div>
         </div>
@@ -683,7 +682,6 @@
             }
             document.getElementById('lightboxLocation').textContent = painting.location;
             document.getElementById('lightboxDescription').textContent = painting.description;
-            document.getElementById('lightboxPrice').textContent = `From $${painting.price}`;
             if (painting.availability === 'yes') {
                 document.getElementById('orderButton').href = `contact.html?painting=${encodeURIComponent(painting.title)}`;
                 document.getElementById('orderButton').style.display = 'inline-block';
