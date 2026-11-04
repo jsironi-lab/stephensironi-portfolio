@@ -405,6 +405,7 @@
             opacity: 0;
             transition: opacity 0.5s ease;
         }
+        @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0s !important; transition-duration: 0.01ms !important; } }
     </style>
 </head>
 <body>
@@ -432,7 +433,7 @@
 
     <!-- Top right navigation -->
     <nav>
-        <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+        <button class="hamburger" id="hamburger" aria-label="Menu" onclick="toggleMenu()">
             <span></span>
             <span></span>
             <span></span>
@@ -496,9 +497,13 @@
         // Rotate every 6 seconds
         setInterval(rotatePainting, 6000);
 
+        window.addEventListener('pageshow', () => document.body.classList.remove('fade-out'));
+
+
         // Smooth page transitions
         document.querySelectorAll('a[href$=".html"]').forEach(link => {
             link.addEventListener('click', function(e) {
+                if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
                 e.preventDefault();
                 const href = this.getAttribute('href');
                 
@@ -514,7 +519,6 @@
         locationLink.textContent = paintings[0].dataset.location;
         locationLink.href = paintings[0].dataset.link;
 
-        console.log('Landing page initialized - rotating through', paintings.length, 'paintings');
     </script>
 </body>
 </html>

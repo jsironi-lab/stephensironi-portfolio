@@ -573,6 +573,7 @@
             opacity: 0;
             transition: opacity 0.5s ease;
         }
+        @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0s !important; transition-duration: 0.01ms !important; } }
     </style>
 </head>
 <body>
@@ -581,7 +582,7 @@
         <div class="nav-left">
             <a href="index.html">Stephen Sironi</a>
         </div>
-        <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+        <button class="hamburger" id="hamburger" aria-label="Menu" onclick="toggleMenu()">
             <span></span>
             <span></span>
             <span></span>
@@ -643,7 +644,7 @@
             {title: "Downtown Crossing No 1", folder: "everyday", filename: "downtown-crossing-no-1.jpg", medium: "Acrylic on Canvas", size: "n/a", location: "Boston, MA", price: "300", description: "Downtown Crossing with pedestrians crossing between shops and buildings. The scene captures the steady flow of foot traffic and everyday movement through the city.", availability: "no"},
             {title: "Fifth Floor View", folder: "everyday", filename: "fifth-floor-view.jpg", medium: "Acrylic on Canvas", size: "n/a", location: "Boston, MA", price: "300", description: "A city intersection viewed from above, showing cars stopped in traffic and pedestrians crossing at the corner. Buildings, sidewalks, and street markings define the structure of the scene.", availability: "no"},
             {title: "Lunchtime Stroll", folder: "everyday", filename: "lunchtime-stroll.jpg", medium: "Acrylic on Canvas", size: "n/a", location: "Boston, MA", price: "300", description: "Pedestrians walk along a downtown Boston street during the lunch hour. Tall buildings, storefronts, and signage frame the steady movement of people passing through the city.", availability: "yes"},
-            {title: "Northend Scene", folder: "everyday", filename: "north-end-scene.jpg", medium: "Acrylic on Canvas", size: "n/a", location: "Boston, MA", price: "300", description: "Pedestrians walk along a narrow street in Boston's North End, passing storefronts, signs, and a busy intersection. Streetlights, traffic signals, and parked cars frame the scene as people move through the neighborhood.", availability: "yes"},
+            {title: "North End Scene", folder: "everyday", filename: "north-end-scene.jpg", medium: "Acrylic on Canvas", size: "n/a", location: "Boston, MA", price: "300", description: "Pedestrians walk along a narrow street in Boston's North End, passing storefronts, signs, and a busy intersection. Streetlights, traffic signals, and parked cars frame the scene as people move through the neighborhood.", availability: "yes"},
             {title: "Outside Peet's", folder: "everyday", filename: "outside-peets.jpg", medium: "Acrylic on Canvas", size: "n/a", location: "Boston, MA", price: "300", description: "People gather and pass by outside a coffee shop on a busy downtown street. Pedestrians wait at the corner while others move through the intersection, with storefronts and traffic framing the scene.", availability: "no"},
             {title: "Park Street Station", folder: "everyday", filename: "park-street-station.jpg", medium: "Acrylic on Canvas", size: "n/a", location: "Boston, MA", price: "300", description: "Passengers wait on the platform at Park Street Station in Boston, framed by columns, signage, and passing trains.", availability: "yes"},
             {title: "Pizza", folder: "everyday", filename: "pizza.jpg", medium: "Acrylic on Canvas", size: "n/a", location: "Boston, MA", price: "300", description: "People walk past a pizza shop at a city intersection, with storefronts and street traffic defining the scene.", availability: "no"},
@@ -733,9 +734,13 @@
             if (e.key === 'Escape') closeLightbox();
         });
 
+        window.addEventListener('pageshow', () => document.body.classList.remove('fade-out'));
+
+
         // Smooth page transitions
         document.querySelectorAll('a[href$=".html"]:not(.order-button)').forEach(link => {
             link.addEventListener('click', function(e) {
+                if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
                 e.preventDefault();
                 const href = this.getAttribute('href');
                 document.body.classList.add('fade-out');
@@ -803,7 +808,6 @@
             document.getElementById('mobileBackdrop').classList.toggle('open');
         }
 
-        console.log('Everyday Life gallery loaded:', paintings.length, 'paintings');
     </script>
 </body>
 </html>

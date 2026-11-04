@@ -103,12 +103,13 @@
             .close-lightbox { top: 1.5rem; right: 1.5rem; }
         }
         body.fade-out { opacity: 0; transition: opacity 0.5s ease; }
+        @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0s !important; transition-duration: 0.01ms !important; } }
     </style>
 </head>
 <body>
     <nav>
         <div class="nav-left"><a href="index.html">Stephen Sironi</a></div>
-        <button class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+        <button class="hamburger" id="hamburger" aria-label="Menu" onclick="toggleMenu()"><span></span><span></span><span></span></button>
         <div class="nav-right" id="navRight">
             <a href="everyday.html">Everyday Life</a>
             <a href="gatherings.html" class="active">Gatherings</a>
@@ -201,8 +202,12 @@
         document.getElementById('lightbox').addEventListener('click', function(e) { if (e.target === this) closeLightbox(); });
         document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeLightbox(); });
 
+        window.addEventListener('pageshow', () => document.body.classList.remove('fade-out'));
+
+
         document.querySelectorAll('a[href$=".html"]:not(.order-button)').forEach(link => {
             link.addEventListener('click', function(e) {
+                if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
                 e.preventDefault();
                 const href = this.getAttribute('href');
                 document.body.classList.add('fade-out');
@@ -253,7 +258,6 @@
             document.getElementById('mobileBackdrop').classList.toggle('open');
         }
 
-        console.log('Gatherings gallery loaded:', paintings.length, 'paintings');
     </script>
 </body>
 </html>

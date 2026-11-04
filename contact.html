@@ -415,6 +415,7 @@
             opacity: 0;
             transition: opacity 0.5s ease;
         }
+        @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0s !important; transition-duration: 0.01ms !important; } }
     </style>
 </head>
 <body>
@@ -423,7 +424,7 @@
         <div class="nav-left">
             <a href="index.html">Stephen Sironi</a>
         </div>
-        <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+        <button class="hamburger" id="hamburger" aria-label="Menu" onclick="toggleMenu()">
             <span></span>
             <span></span>
             <span></span>
@@ -464,7 +465,7 @@
                         <label><input type="checkbox" name="painting" value="Downtown Crossing No 1"> Downtown Crossing No 1</label>
                         <label><input type="checkbox" name="painting" value="Fifth Floor View"> Fifth Floor View</label>
                         <label><input type="checkbox" name="painting" value="Lunchtime Stroll"> Lunchtime Stroll</label>
-                        <label><input type="checkbox" name="painting" value="Northend Scene"> Northend Scene</label>
+                        <label><input type="checkbox" name="painting" value="North End Scene"> North End Scene</label>
                         <label><input type="checkbox" name="painting" value="Outside Peet's"> Outside Peet's</label>
                         <label><input type="checkbox" name="painting" value="Park Street Station"> Park Street Station</label>
                         <label><input type="checkbox" name="painting" value="Pizza"> Pizza</label>
@@ -625,9 +626,13 @@
             document.getElementById('mobileBackdrop').classList.toggle('open');
         }
 
+        window.addEventListener('pageshow', () => document.body.classList.remove('fade-out'));
+
+
         // Smooth page transitions
         document.querySelectorAll('a[href$=".html"]').forEach(link => {
             link.addEventListener('click', function(e) {
+                if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
                 e.preventDefault();
                 const href = this.getAttribute('href');
                 document.body.classList.add('fade-out');
