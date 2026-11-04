@@ -2,15 +2,16 @@
 
 Static portfolio for stephensironi.com (CNAME at repo root, GitHub Pages). Plain HTML/CSS, no build step.
 
-## Gallery pages
-`index.html` (featured works) and `gallery.html` (full collection) are generated: edit `paintings-data.csv`, then run `python3 generate_gallery.py`. The script writes `index.html.backup` / `gallery.html.backup` first; those are gitignored, do not commit them.
+## Pages
+All pages are hand-edited HTML: `index` (home, 6 featured paintings), `everyday`, `gatherings`, `portraits` (the three galleries), `about`, `contact` (inquiry form posts to Formspree), `404`, plus `sitemap.xml` and `robots.txt`.
+
+`paintings-data.csv` is a reference record of every painting (title, gallery, location, medium, price, description, availability). Nothing reads it; the old generator and `gallery.html` were retired because they predated the move from location-based to style-based galleries. Keep it in sync by hand if paintings change.
+
+`landing-minimalist.html` is unlinked; confirm with Jeff before deleting.
 
 ## Images
 - `images/originals/` (359M) is gitignored and exists only on this Mac. Back it up outside git.
-- `images/paintings/` and `images/thumbnails/` are the web versions that are committed.
-
-## Other pages
-`about`, `contact`, `portraits`, `everyday`, `gatherings`, `404`, plus `sitemap.xml` and `robots.txt`. `landing-minimalist.html` is unlinked; confirm with Jeff before deleting.
+- `images/paintings/{everyday,gatherings,portraits}/` are the committed web versions.
 
 ## Deploy
 Push to `main`.
