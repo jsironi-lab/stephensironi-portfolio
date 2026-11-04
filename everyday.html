@@ -181,6 +181,15 @@
             filter: brightness(1.05);
         }
 
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+        }
+
         .painting-item img {
             height: calc(100% - 50px);
             width: auto;
@@ -600,6 +609,7 @@
     </div>
 
     <!-- Navigation arrows -->
+    <h1 class="sr-only">Everyday Life — Paintings by Stephen Sironi</h1>
     <div class="gallery-arrow left" id="arrowLeft"><span>&larr;</span></div>
     <div class="gallery-arrow right" id="arrowRight"><span>&rarr;</span></div>
 
@@ -677,7 +687,7 @@
         paintings.forEach((painting, index) => {
             const item = document.createElement('div');
             item.className = 'painting-item';
-            item.innerHTML = `<img src="images/paintings/${painting.folder}/${painting.filename}" alt="${painting.title}"><div class="painting-caption"><div class="title">${painting.title}</div><div class="medium">${painting.medium}</div></div>`;
+            item.innerHTML = `<img loading="lazy" src="images/paintings/${painting.folder}/${painting.filename}" alt="${painting.title}"><div class="painting-caption"><div class="title">${painting.title}</div><div class="medium">${painting.medium}</div></div>`;
             item.onclick = () => openLightbox(index);
             gallery.appendChild(item);
         });

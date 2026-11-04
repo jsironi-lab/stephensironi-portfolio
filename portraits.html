@@ -6,14 +6,14 @@
     <title>Portraits &amp; Still Life | Stephen Sironi</title>
     <meta name="description" content="Acrylic portraits and still life paintings by Stephen Sironi — intimate studies of people, food, and quiet moments.">
     <link rel="canonical" href="https://stephensironi.com/portraits.html">
-    <meta property="og:title" content="Portraits & Still Life | Stephen Sironi">
+    <meta property="og:title" content="Portraits &amp; Still Life | Stephen Sironi">
     <meta property="og:description" content="Acrylic portraits and still life paintings — intimate studies of people, food, and quiet moments.">
     <meta property="og:image" content="https://stephensironi.com/og-image.jpg">
     <meta property="og:url" content="https://stephensironi.com/portraits.html">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Stephen Sironi">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Portraits & Still Life | Stephen Sironi">
+    <meta name="twitter:title" content="Portraits &amp; Still Life | Stephen Sironi">
     <meta name="twitter:description" content="Acrylic portraits and still life paintings — intimate studies of people, food, and quiet moments.">
     <meta name="twitter:image" content="https://stephensironi.com/og-image.jpg">
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@200;300;400&family=Work+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -44,6 +44,15 @@
         .gallery-scroll { display: flex; gap: 60px; padding: 0 6rem 60px 6rem; height: 100%; align-items: center; }
         .painting-item { flex-shrink: 0; height: calc((100vh - 200px) * 0.616); cursor: pointer; position: relative; transition: transform 0.4s ease, filter 0.4s ease; }
         .painting-item:hover { transform: scale(1.02); filter: brightness(1.05); }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+        }
+
         .painting-item img { height: calc(100% - 50px); width: auto; display: block; object-fit: contain; }
         .painting-caption { padding-top: 0.8rem; }
         .painting-caption .title { font-family: 'Crimson Pro', serif; font-size: 1.32rem; font-weight: 300; color: #000; line-height: 1.3; }
@@ -117,6 +126,7 @@
         <a href="about.html">About</a>
         <a href="contact.html">Contact</a>
     </div>
+    <h1 class="sr-only">Portraits &amp; Still Life — Paintings by Stephen Sironi</h1>
     <div class="gallery-arrow left" id="arrowLeft"><span>&larr;</span></div>
     <div class="gallery-arrow right" id="arrowRight"><span>&rarr;</span></div>
     <div class="gallery-container">
@@ -155,7 +165,7 @@
         paintings.forEach((painting, index) => {
             const item = document.createElement('div');
             item.className = 'painting-item';
-            item.innerHTML = `<img src="images/paintings/${painting.folder}/${painting.filename}" alt="${painting.title}"><div class="painting-caption"><div class="title">${painting.title}</div><div class="medium">${painting.medium}</div></div>`;
+            item.innerHTML = `<img loading="lazy" src="images/paintings/${painting.folder}/${painting.filename}" alt="${painting.title}"><div class="painting-caption"><div class="title">${painting.title}</div><div class="medium">${painting.medium}</div></div>`;
             item.onclick = () => openLightbox(index);
             gallery.appendChild(item);
         });
