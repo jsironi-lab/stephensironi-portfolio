@@ -35,7 +35,8 @@ def read_paintings_data(csv_path):
                 'medium': row['medium'].strip(),
                 'price': row['price'].strip(),
                 'description': row['description'].strip(),
-                'featured': row.get('featured', '').strip().lower() == 'yes'
+                'featured': row.get('featured', '').strip().lower() == 'yes',
+                'availability': row.get('availability', 'available').strip().lower()
             })
     
     print(f"✅ Read {len(paintings)} paintings from {csv_path}")
@@ -44,6 +45,7 @@ def read_paintings_data(csv_path):
 def validate_paintings_data(paintings):
     """Validate data and image files."""
     valid = True
+    valid_availability = ['available', 'out_of_stock', 'temporarily_unavailable', 'original_only']
     
     for i, painting in enumerate(paintings, 1):
         required = ['title', 'location', 'filename', 'medium', 'price', 'description']
@@ -56,6 +58,10 @@ def validate_paintings_data(paintings):
             print(f"❌ Row {i}: Invalid location '{painting['location']}'")
             valid = False
         
+        if painting['availability'] not in valid_availability:
+            print(f"⚠️  Row {i}: Invalid availability '{painting['availability']}' - defaulting to 'available'")
+            painting['availability'] = 'available'
+        
         image_path = f"images/paintings/{painting['location']}/{painting['filename']}"
         if not os.path.exists(image_path):
             print(f"⚠️  Row {i}: Image not found: {image_path}")
@@ -67,14 +73,35 @@ def validate_paintings_data(paintings):
 
 def generate_painting_card(painting):
     """Generate HTML for a painting card."""
+    availability = painting.get('availability', 'available')
+    
+    # Determine availability badge and button
+    if availability == 'available':
+        badge_html = ''
+        button_html = f'<button class="order-button" onclick="openOrderModal(\'{painting["title"]}\', {painting["price"]})">ORDER PRINT</button>'
+    elif availability == 'out_of_stock':
+        badge_html = '<div class="availability-badge out-of-stock">OUT OF STOCK</div>'
+        button_html = '<button class="order-button disabled" disabled>UNAVAILABLE</button>'
+    elif availability == 'temporarily_unavailable':
+        badge_html = '<div class="availability-badge temp-unavailable">TEMPORARILY UNAVAILABLE</div>'
+        button_html = '<button class="order-button disabled" disabled>UNAVAILABLE</button>'
+    elif availability == 'original_only':
+        badge_html = '<div class="availability-badge original-only">ORIGINAL ONLY</div>'
+        button_html = '<a href="#contact" class="order-button contact-button">CONTACT FOR PURCHASE</a>'
+    else:
+        badge_html = ''
+        button_html = f'<button class="order-button" onclick="openOrderModal(\'{painting["title"]}\', {painting["price"]})">ORDER PRINT</button>'
+    
     return f'''            <div class="painting-card">
-                <div class="painting-image" style="background-image: url('images/paintings/{painting['location']}/{painting['filename']}'); background-size: cover; background-position: center;"></div>
+                <div class="painting-image" style="background-image: url('images/paintings/{painting['location']}/{painting['filename']}'); background-size: cover; background-position: center;">
+                    {badge_html}
+                </div>
                 <div class="painting-info">
                     <h3>{painting['title']}</h3>
                     <p class="medium">{painting['medium']}</p>
                     <p class="description">{painting['description']}</p>
                     <div class="price-tag">From ${painting['price']}</div>
-                    <button class="order-button" onclick="openOrderModal('{painting['title']}', {painting['price']})">ORDER PRINT</button>
+                    {button_html}
                 </div>
             </div>'''
 
