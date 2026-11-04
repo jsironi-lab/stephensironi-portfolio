@@ -377,25 +377,7 @@
         </div>
     </section>
 
-    <script>
-        // Hamburger menu toggle
-        function toggleMenu() {
-            document.getElementById('hamburger').classList.toggle('active');
-            document.getElementById('mobileMenu').classList.toggle('open');
-            document.getElementById('mobileBackdrop').classList.toggle('open');
-        }
-
-        // Smooth page transitions
-        document.querySelectorAll('a[href$=".html"]').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const href = this.getAttribute('href');
-                document.body.classList.add('fade-out');
-                setTimeout(() => {
-                    window.location.href = href;
-                }, 500);
-            });
-        });
-    </script>
+    
+    <script src="/js/site.js"></script>
 </body>
 </html>

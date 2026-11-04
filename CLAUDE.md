@@ -13,3 +13,8 @@ All pages are hand-edited HTML: `index` (home, 6 featured paintings), `everyday`
 
 ## Deploy
 Push to `main`.
+
+## Shared code
+- `css/site.css` (all pages), `css/inner.css` (every page except home), `css/gallery.css` (gatherings + portraits), `js/site.js` (menu toggle + page fade, all pages). Page-specific styles stay inline in each page.
+- The nav and mobile menu markup is still copied into each page (no build step), so a nav change means editing all 7 HTML files (index, about, contact, everyday, gatherings, portraits, 404).
+- Inner pages carry JSON-LD that references the `#artist` and `#website` ids defined on the home page.

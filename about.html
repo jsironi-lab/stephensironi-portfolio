@@ -5,6 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About | Stephen Sironi</title>
     <meta name="description" content="Stephen Sironi paints life as he sees it, capturing quiet snapshots of everyday experience. Born south of Boston, he studied Fine Arts at UMass Amherst and resides in central Ohio.">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "AboutPage",
+        "@id": "https://stephensironi.com/about.html#page",
+        "url": "https://stephensironi.com/about.html",
+        "name": "About | Stephen Sironi",
+        "description": "Stephen Sironi paints life as he sees it, capturing quiet snapshots of everyday experience. Born south of Boston, he studied Fine Arts at UMass Amherst and resides in central Ohio.",
+        "isPartOf": {
+            "@id": "https://stephensironi.com/#website"
+        },
+        "mainEntity": {
+            "@id": "https://stephensironi.com/#artist"
+        }
+    }
+    </script>
     <link rel="canonical" href="https://stephensironi.com/about.html">
     <meta property="og:title" content="About | Stephen Sironi">
     <meta property="og:description" content="Stephen Sironi paints life as he sees it, capturing quiet snapshots of everyday experience and the layered complexity of urban and communal spaces.">
@@ -21,33 +37,14 @@
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+        <link rel="stylesheet" href="css/site.css">
+    <link rel="stylesheet" href="css/inner.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
 
         body {
             font-family: 'Work Sans', sans-serif;
             background: #fff;
             color: #000;
-        }
-
-        /* Top navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            padding: 2rem 3rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
         }
 
         .nav-left a {
@@ -57,74 +54,6 @@
             color: #000;
             text-decoration: none;
             letter-spacing: 0.5px;
-        }
-
-        .nav-right {
-            display: flex;
-            gap: 2.5rem;
-        }
-
-        .nav-right a {
-            font-family: 'Work Sans', sans-serif;
-            font-size: 0.92rem;
-            font-weight: 300;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: rgba(0, 0, 0, 0.6);
-            text-decoration: none;
-            transition: color 0.3s ease;
-            position: relative;
-        }
-
-        .nav-right a.active,
-        .nav-right a:hover {
-            color: #000;
-        }
-
-        .nav-right a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: #000;
-            transition: width 0.3s ease;
-        }
-
-        .nav-right a.active::after,
-        .nav-right a:hover::after {
-            width: 100%;
-        }
-
-        /* Hamburger menu */
-        .hamburger {
-            display: none;
-            cursor: pointer;
-            background: none;
-            border: none;
-            padding: 0;
-        }
-
-        .hamburger span {
-            display: block;
-            width: 24px;
-            height: 2px;
-            background: #000;
-            margin: 5px 0;
-            transition: all 0.3s ease;
-        }
-
-        .hamburger.active span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
-        }
-
-        .hamburger.active span:nth-child(2) {
-            opacity: 0;
-        }
-
-        .hamburger.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(5px, -5px);
         }
 
         /* About layout */
@@ -204,89 +133,6 @@
             color: #fff;
         }
 
-        /* Mobile menu backdrop */
-        .mobile-backdrop {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1400;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.4s ease, visibility 0.4s ease;
-        }
-
-        .mobile-backdrop.open {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        /* Slide-out mobile menu */
-        .mobile-menu {
-            position: fixed;
-            top: 0;
-            right: 0;
-            width: 80%;
-            max-width: 360px;
-            height: 100%;
-            background: #fff;
-            z-index: 1500;
-            display: flex;
-            flex-direction: column;
-            padding: 6rem 3rem;
-            gap: 1.8rem;
-            transform: translateX(100%);
-            transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
-            visibility: hidden;
-        }
-
-        .mobile-menu.open {
-            transform: translateX(0);
-            visibility: visible;
-        }
-
-        .mobile-menu-close {
-            position: absolute;
-            top: 2rem;
-            right: 2rem;
-            background: none;
-            border: none;
-            color: rgba(0, 0, 0, 0.6);
-            font-size: 1.8rem;
-            font-weight: 200;
-            cursor: pointer;
-            padding: 0;
-            line-height: 1;
-            transition: color 0.3s ease;
-        }
-
-        .mobile-menu-close:hover {
-            color: #000;
-        }
-
-        .mobile-menu a {
-            font-family: 'Work Sans', sans-serif;
-            font-size: 1.3rem;
-            font-weight: 300;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: #000;
-            text-decoration: none;
-        }
-
-        @media (max-width: 1024px) {
-            .hamburger {
-                display: block;
-                z-index: 2000;
-            }
-
-            .nav-right {
-                display: none;
-            }
-        }
-
         @media (max-width: 768px) {
             nav {
                 padding: 1.5rem;
@@ -310,13 +156,6 @@
                 font-size: 2rem;
             }
         }
-
-        /* Smooth page transitions */
-        body.fade-out {
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
-        @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0s !important; transition-duration: 0.01ms !important; } }
     </style>
 </head>
 <body>
@@ -364,29 +203,7 @@
         </div>
     </section>
 
-    <script>
-        // Hamburger menu toggle
-        function toggleMenu() {
-            document.getElementById('hamburger').classList.toggle('active');
-            document.getElementById('mobileMenu').classList.toggle('open');
-            document.getElementById('mobileBackdrop').classList.toggle('open');
-        }
-
-        window.addEventListener('pageshow', () => document.body.classList.remove('fade-out'));
-
-
-        // Smooth page transitions
-        document.querySelectorAll('a[href$=".html"]').forEach(link => {
-            link.addEventListener('click', function(e) {
-                if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
-                e.preventDefault();
-                const href = this.getAttribute('href');
-                document.body.classList.add('fade-out');
-                setTimeout(() => {
-                    window.location.href = href;
-                }, 500);
-            });
-        });
-    </script>
+    
+    <script src="js/site.js"></script>
 </body>
 </html>
